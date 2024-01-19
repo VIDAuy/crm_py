@@ -1,0 +1,121 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="modalInformacionDetalladaBaja" style="z-index: 1060;">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header d-block">
+        <h2 class="text-center" id="MIDBtitulo" style="display: inline;"></h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <br />
+        <span id="MIDBestadoActual"></span>
+      </div>
+      <div class="modal-body container" style="width: 95% !important;">
+        <input type="hidden" id="MIDBid" />
+        <h3>Información del socio:</h3>
+        <div class="form-row">
+          <div class="form-group col-3">
+            <label for="MIDBnombre">Nombre completo:</label>
+            <input type="text" class="form-control" id="MIDBnombre" readonly style="background-color: #eee;" />
+          </div>
+          <div class="form-group col-3">
+            <label for="MIDBcedula">Cédula:</label>
+            <input type="text" class="form-control" id="MIDBcedula" readonly style="background-color: #eee;" />
+          </div>
+          <div class="form-group col-3">
+            <label for="MIDBfilialS">Filial:</label>
+            <input type="text" class="form-control" id="MIDBfilialS" readonly style="background-color: #eee;" />
+          </div>
+          <div class="form-group col-3">
+            <label for="MIDBmotivoB">Motivo de baja:</label>
+            <input type="text" class="form-control" id="MIDBmotivoB" readonly style="background-color: #eee;" />
+          </div>
+        </div>
+        <div class="form-row justify-content-center">
+          <input type="button" class="btn btn-primary botonMSC col-8"
+            value="Información sobre los servicios del usuario" />
+        </div>
+        <h3>Información de contacto:</h3>
+        <div class="form-row">
+          <div class="form-group col-3">
+            <label for="MIDBnombreC">Nombre:</label>
+            <input type="text" class="form-control" id="MIDBnombreC" readonly style="background-color: #eee;" />
+          </div>
+          <div class="form-group col-3">
+            <label for="MIDBapellido">Apellido:</label>
+            <input type="text" class="form-control" id="MIDBapellido" readonly style="background-color: #eee;" />
+          </div>
+          <div class="form-group col-3">
+            <label for="MIDBtel">Telefono:</label>
+            <input type="text" class="form-control" id="MIDBtel" readonly style="background-color: #eee;" />
+          </div>
+          <div class="form-group col-3">
+            <label for="MIDBcel">Celular:</label>
+            <input type="text" class="form-control" id="MIDBcel" readonly style="background-color: #eee;" />
+          </div>
+        </div>
+        <h3>Información de gestión:</h3>
+        <div class="form-row">
+          <div class="form-group col-3">
+            <label for="MIDBnombreF">Nombre funcionario:</label>
+            <input type="text" class="form-control" id="MIDBnombreF" readonly style="background-color: #eee;" />
+          </div>
+          <div class="form-group col-3">
+            <label for="MIDBfilialF">Filial funcionario:</label>
+            <input type="text" class="form-control" id="MIDBfilialF" readonly style="background-color: #eee;" />
+          </div>
+          <div class="form-group col-3">
+            <label for="MIDBfechaIngreso">Fecha ingreso:</label>
+            <input type="text" class="form-control" id="MIDBfechaIngreso" readonly style="background-color: #eee;" />
+          </div>
+          <div class="form-group col-3">
+            <label for="MIDBobs">Observaciones:</label>
+            <input type="text" class="form-control" id="MIDBobs" readonly style="background-color: #eee;" />
+          </div>
+        </div>
+
+        <!-- INICIO DEL FORM -->
+
+        <hr />
+        <form id="MIDBform">
+          <input type="hidden" name="MIDBidrelacion" id="MIDBidrelacion" />
+          <h3>Actualización de la gestión:</h3>
+          <div class="form-row">
+            <div class="form-group col-3">
+              <label for="MIDBnombreFA">Nombre funcionario:</label>
+              <input type="text" class="form-control" id="MIDBnombreFA" name="MIDBnombreFA"
+                placeholder="Ingrese aquí su nombre" />
+            </div>
+            <div class="form-group col-3">
+              <label for="MIDBestado">Estado:</label>
+              <select class="form-control" id="MIDBestado" name="MIDBestado" onchange="corroborarMIDBestado()">
+              </select>
+            </div>
+            <div class="form-group col-3">
+              <label for="MIDBmno">Motivo no otorgada:</label>
+              <select class="form-control" id="MIDBmno" name="MIDBmno" disabled>
+                <option value="" disabled selected>¿Por qué no se otorgó?</option>
+                <option value="No está en plazo">No está en plazo</option>
+                <option value="Deuda">Deuda</option>
+                <option value="No entregó partida de defunción">No entregó partida de defunción</option>
+                <option value="No entregó comprobante de viaje">No entregó comprobante de viaje</option>
+                <option value="Ilocalizable">Ilocalizable</option>
+              </select>
+            </div>
+            <div class="form-group col-3">
+              <label for="MIDBobservacion">Observaciones:</label>
+              <textarea class="form-control" id="MIDBobservacion" name="MIDBobservacion"
+                placeholder="Ingrese aquí información que considere importante" rows="1"></textarea>
+            </div>
+          </div>
+        </form>
+
+        <!-- FINAL DEL FORM -->
+
+        <div class="form-group" style="float: right;">
+          <input type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" value="Cancelar" />
+          <input type="button" class="btn btn-primary" value="Actualizar registro" id="enviarMIDBform"
+            onclick="MIDBactualizarDatos()" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

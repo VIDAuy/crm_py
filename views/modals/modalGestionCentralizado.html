@@ -1,0 +1,110 @@
+<div class="modal fade" id="modalGestionCentralizado" tabindex="-1" role="dialog" aria-labelledby="modalGestionCentralizado" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h4 class="modal-title" id="tituloGC"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <h3>Datos del socio:</h3>
+                    <input type="hidden" id="idGC">
+                    <div class="form-row">
+                        <div class="form-group col-5">
+                            <label for="nombreGC">Nombre:</label>
+                            <input type="text" id="nombreGC" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="cedulaGC">Cédula:</label>
+                            <input type="text" id="cedulaGC" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-3">
+                            <label for="telefonoGC">Teléfono:</label>
+                            <input type="text" id="telefonoGC" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="nroTalonGC">Nro de talón:</label>
+                            <input type="text" id="nroTalonGC" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3>Datos de la tarjeta:</h3>
+                    <div class="form-row">
+                        <div class="form-group col-3">
+                            <label for="nroTarjetaGC">Nro tarjeta:</label>
+                            <input type="text" id="nroTarjetaGC" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="CITitularGC">CI titular:</label>
+                            <input type="text" id="CITitularGC" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-7">
+                            <label for="mDRGC">Motivo Rechazo:</label>
+                            <input type="text" id="mDRGC" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3>Cuotas anteriores:</h3>
+                    <div class="form-row">
+                        <div class="form-group col-2">
+                            <label for="cuota6GC" id="mes6GC"></label>
+                            <input type="text" id="cuota6GC" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="cuota5GC" id="mes5GC"></label>
+                            <input type="text" id="cuota5GC" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="cuota4GC" id="mes4GC"></label>
+                            <input type="text" id="cuota4GC" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="cuota3GC" id="mes3GC"></label>
+                            <input type="text" id="cuota3GC" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="cuota2GC" id="mes2GC"></label>
+                            <input type="text" id="cuota2GC" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="cuota1GC" id="mes1GC"></label>
+                            <input type="text" id="cuota1GC" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3>Gestión:</h3>
+                    <div class="form-row">
+                        <div class="form-group col-2">
+                            <label for="estadoGC">Estado:</label>
+                            <select id="estadoGC" class="form-control">
+                                <option value="disabled" selected disabled>Obligatorio</option>
+                                <option value="1">Inubicable</option>
+                                <option value="2">Fallecido</option>
+                                <option value="3">Auditoria</option>
+                                <option value="4">Promesa Pago</option>
+                                <option value="5">Fecha Contacto</option>
+                                <option value="6">Baja Pendiente</option>
+                                <option value="7">Baja</option>
+                                <option value="8">Pago</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="fechaOpcionalGC" id="fechaOpcionalGCLabel">Campo innecesario:</label>
+                            <input type="text" id="fechaOpcionalGC" class="form-control">
+                        </div>
+                        <div class="form-group col-8">
+                            <label for="observacionGC">Observación:</label>
+                            <textarea name="" id="observacionGC" class="form-control" rows="1"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardarGC">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
