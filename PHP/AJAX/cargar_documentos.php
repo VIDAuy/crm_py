@@ -84,30 +84,6 @@ function subir_documento($tipo_documento, $area, $documento, $area_carga)
   return $respuesta;
 }
 
-
-function controlarExtension($files, $tipo)
-{
-  $validar_extension = $tipo;
-  $valido = 0;
-  for ($i = 0; $i < count($files["name"]); $i++) {
-    $extension_archivo = strtolower(pathinfo(basename($files["name"][$i]), PATHINFO_EXTENSION));
-
-    if (in_array($extension_archivo, $validar_extension)) {
-      $valido++;
-    } else {
-      $valido = 0;
-    }
-  }
-  return $valido;
-}
-
-function generarHash($largo)
-{
-  $caracteres_permitidos = '0123456789abcdefghijklmnopqrstuvwxyz';
-  return substr(str_shuffle($caracteres_permitidos), 0, $largo);
-}
-
-
 function htmlBodyEmail($texto)
 {
 

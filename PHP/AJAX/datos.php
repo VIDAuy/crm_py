@@ -17,7 +17,7 @@ $envioSector = $_REQUEST['ensec'];
 $socio       = $_REQUEST['socio'];
 $sector      = $_REQUEST['sector'];
 
-if ($area == "" || $nombre == "" || $tel == "" || $observacion == "" || $cedula == "" || $socio == "" || $sector == "") {
+if ($area == "" || $nombre == "" || $observacion == "" || $cedula == "" || $socio == "" || $sector == "") {
 	$respuesta['error'] = true;
 	$respuesta['message'] = "Ha ocurrido un error, contacte al administrador";
 	die(json_encode($respuesta));
@@ -133,17 +133,6 @@ function insert_registro($cedula, $nombre, $telefono, $sector, $observacion, $en
 	return $consulta == true ? mysqli_insert_id($conexion) : false;
 }
 
-function obtener_email_envioSector($envioSector)
-{
-	$conexion = connection(DB);
-	$tabla = TABLA_USUARIOS;
-
-	$sql = "SELECT email, avisar_a FROM {$tabla} WHERE id = '$envioSector'";
-	$consulta = mysqli_query($conexion, $sql);
-
-	return mysqli_fetch_assoc($consulta);
-}
-
 function htmlBodyEmail($texto)
 {
 	$html = '
@@ -239,26 +228,4 @@ function EnviarMail($sector, $datos_sector, $bodyHtml, $ccs = null)
 	} else {
 		return $mail->ErrorInfo;
 	}
-}
-
-function controlarExtension($files, $tipo)
-{
-	$validar_extension = $tipo;
-	$valido = 0;
-	for ($i = 0; $i < count($files["name"]); $i++) {
-		$extension_archivo = strtolower(pathinfo(basename($files["name"][$i]), PATHINFO_EXTENSION));
-
-		if (in_array($extension_archivo, $validar_extension)) {
-			$valido++;
-		} else {
-			$valido = 0;
-		}
-	}
-	return $valido;
-}
-
-function generarHash($largo)
-{
-	$caracteres_permitidos = '0123456789abcdefghijklmnopqrstuvwxyz';
-	return substr(str_shuffle($caracteres_permitidos), 0, $largo);
 }
