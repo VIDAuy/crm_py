@@ -49,7 +49,8 @@ if (isset($_GET['ID'])) {
 			$baja = $baja == 'SI' ? "<span class='text-danger'>$baja</span>" : "<span>$baja</span>";
 			$nombre_imagen = $row['nombre_imagen'];
 			$ruta_imagen = URL_DOCUMENTOS . "/" . $nombre_imagen;
-			$imagen = $nombre_imagen != "" ? "<button class='btn btn-sm btn-info' onclick='modal_ver_imagen_registro(`" . $ruta_imagen . "`);'>Ver Imagen</button>" : "";
+			$imagenes = obtener_imagenes($id);
+			$imagen = count($imagenes) > 0 ? "<button class='btn btn-sm btn-info' onclick='modal_ver_imagen_registro(`" . URL_DOCUMENTOS . "`, `" . $id . "`);'>Ver Archivos</button>" : "-";
 			$id_avisar_a = $row['envioSector'];
 			$avisar_a = obtener_area_avisada($id_avisar_a);
 
@@ -58,7 +59,7 @@ if (isset($_GET['ID'])) {
 				'fecha' 		=> date("d/m/Y H:i:s", strtotime($row['fecha_registro'])),
 				'sector' 		=> $row['sector'],
 				'observacion'	=> $row['observaciones'],
-				'avisar_a'	    => ucfirst($avisar_a),
+				'avisar_a'	    => $avisar_a != "" ? ucfirst($avisar_a) : "-",
 				'socio' 		=> $socio,
 				'baja' 			=> $baja,
 				'imagen' 	    => $imagen,
@@ -127,4 +128,20 @@ function obtener_area_avisada($id)
 	$consulta = mysqli_query($conexion, $sql);
 
 	return mysqli_fetch_assoc($consulta)['avisar_a'];
+}
+
+function obtener_imagenes($id)
+{
+	$conexion = connection(DB);
+	$tabla = TABLA_IMAGENES_REGISTRO;
+
+	$sql = "SELECT nombre_imagen FROM imagenes_registro WHERE id_registro = '$id' AND activo = 1";
+	$consulta = mysqli_query($conexion, $sql);
+
+	$imagenes = [];
+	while ($row = mysqli_fetch_assoc($consulta)) {
+		array_push($imagenes, $row['nombre_imagen']);
+	}
+
+	return $imagenes;
 }

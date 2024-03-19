@@ -1,5 +1,5 @@
 <?php
-$version = '?v=1.0.42';
+$version = '?v=1.0.43';
 session_start();
 date_default_timezone_set('America/Montevideo');
 
@@ -31,6 +31,7 @@ if (isset($_SESSION['nivel_py'])) {
 			echo '<script src="assets/JS/masDatos/datosCoordina.js' . $version . '"></script>';
 			include('views/modals/modalDatosProductos.html');
 			echo '<script src="assets/JS/masDatos/datosProductos.js' . $version . '"></script>';
+			include('views/modals/modal_mostrar_imagenes.html');
 
 
 			include('views/includes/historiaComunicacionDeCedula.html');
@@ -61,6 +62,7 @@ if (isset($_SESSION['nivel_py'])) {
 			echo '<script src="assets/JS/masDatos/datosCoordina.js' . $version . '"></script>';
 			include('views/modals/modalDatosProductos.html');
 			echo '<script src="assets/JS/masDatos/datosProductos.js' . $version . '"></script>';
+			include('views/modals/modal_mostrar_imagenes.html');
 
 			// MODALES DE BAJA Y RELACIONADOS
 
@@ -97,6 +99,7 @@ if (isset($_SESSION['nivel_py'])) {
 			include('views/modals/modal_licencia_acompanantes.html');
 			include('views/modals/modal_faltas_acompanantes.html');
 			include('views/modals/modal_horas_acompanantes.html');
+			include('views/modals/modal_mostrar_imagenes.html');
 
 			// MODALES DE BAJA Y RELACIONADOS
 
@@ -149,6 +152,7 @@ if (isset($_SESSION['nivel_py'])) {
 			echo '<script src="assets/JS/sistemaBajas/gestionarBajas.js' . $version . '"></script>';
 			include('views/modals/modalServiciosContratados.html');
 			echo '<script src="assets/JS/serviciosContratados/js.js' . $version . '"></script>';
+			include('views/modals/modal_mostrar_imagenes.html');
 			break;
 
 
@@ -173,7 +177,7 @@ if (isset($_SESSION['nivel_py'])) {
 			include('views/modals/nivel6/modal_todos_registros_faltas_acompanantes_personal.html');
 			include('views/modals/nivel6/modal_alertas_funcionarios.html');
 			include('views/modals/nivel6/modal_capacitacion_acompanantes.html');
-
+			include('views/modals/modal_mostrar_imagenes.html');
 
 			break;
 
@@ -185,6 +189,7 @@ if (isset($_SESSION['nivel_py'])) {
 			// MODALES DE INFORMACIÓN
 
 			include('views/modals/nivel7/modalVerMasInfoRegistros.html');
+			include('views/modals/modal_mostrar_imagenes.html');
 
 			break;
 	}

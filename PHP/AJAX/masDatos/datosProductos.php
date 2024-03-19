@@ -43,7 +43,9 @@ function obtener_productos($cedula)
 	FROM
 		{$tabla} pps 
 	WHERE
-		cedula = '$cedula'";
+		cedula = '$cedula'
+		and activo = 1
+		";
 
 	return mysqli_query($conexion, $sql);
 }
@@ -51,11 +53,18 @@ function obtener_productos($cedula)
 
 function obtener_servicio($nro_servicio)
 {
-	$conexion = connection(DB_ABMMOD);
-	$tabla = TABLA_SERVICIOS_CODIGOS;
+	$conexion = connection(DB_MOTOR_PRECIOS_PY);
+	$tabla = TABLA_SERVICIOS;
 
-	$sql = "SELECT servicio FROM {$tabla} WHERE nro_servicio = '$nro_servicio'";
+	$sql = "SELECT 
+		nombre 
+	  FROM 
+		{$tabla} 
+	  WHERE 
+		numero_servicio = '$nro_servicio' 
+		ORDER BY id DESC";
 	$consulta = mysqli_query($conexion, $sql);
+	$resultados = mysqli_fetch_assoc($consulta)['nombre'];
 
-	return mysqli_fetch_assoc($consulta)['servicio'];
+	return $resultados;
 }

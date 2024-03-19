@@ -713,79 +713,87 @@ function modalHistoriaComunicacionDeCedula(CIParam) {
 }
 
 function cargo(param, socioParam) {
-  if (controlCargo(param) == "") {
-    if (param == 0) {
-      nombre = $("#nombreNSR").val();
-      telefono = $("#telefonoNSR").val();
-      observacion = $("#observacionesNSR").val();
-      ensec = $("#avisarNSR").val();
-      imagen = $('#cargar_imagen_registro_1').prop("files")[0];
-    } else if (param == 1) {
-      nombre = $("#nombreNS").val() + " " + $("#apellidoNS").val();
-      telefono = $("#telefonoNS").val() + " " + $("#celularNS").val();
-      observacion = $("#observacionesNS").val();
-      ensec = $("#avisarNS").val();
-      imagen = $('#cargar_imagen_registro_2').prop("files")[0];
-    } else {
-      nombre = $("#nom").text();
-      telefono = $("#telefono").text();
-      observacion = $("#obser").val();
-      ensec = $("#ensec").val();
-      imagen = $('#cargar_imagen_registro_3').prop("files")[0];
-    }
 
-    cedulas = $("#cedulas").text();
-    sector = $("#sector_py").val();
+  let nombre = param == 0 ? $("#nombreNSR").val() :
+    param == 1 ? $("#nombreNS").val() + " " + $("#apellidoNS").val() :
+      $("#nom").text();
 
-    if (ensec == "sin_seleccion") {
-      error("Debe seleccionar a quien desea avisar");
-    } else {
+  let telefono = param == 0 ? $("#telefonoNSR").val() :
+    param == 1 ? $("#telefonoNS").val() + " " + $("#celularNS").val() :
+      $("#telefono").text();
 
-      var form_data = new FormData();
-      form_data.append("nombre", nombre);
-      form_data.append("telefono", telefono);
-      form_data.append("observacion", observacion);
-      form_data.append("ensec", ensec);
-      form_data.append("cedulas", cedulas);
-      form_data.append("sector", sector);
-      form_data.append("socio", socioParam);
-      form_data.append("imagen", imagen);
+  let observacion = param == 0 ? $("#observacionesNSR").val() :
+    param == 1 ? $("#observacionesNS").val() :
+      $("#obser").val();
 
-      $.ajax({
-        type: "POST",
-        data: form_data,
-        url: `${url_app}datos.php`,
-        dataType: "JSON",
-        contentType: false,
-        processData: false,
-        beforeSend: function () {
-          mostrarLoader();
-        },
-        complete: function () {
-          mostrarLoader("O");
-        },
-        success: function (content) {
-          if (content.error === false) {
-            alerta_ancla("Exito!", content.message, "success");
-            historiaComunicacionDeCedula();
-            $("#obser").val("");
-            $("#observacionesNSR").val("");
-          } else {
-            error(content.message);
-          }
-        },
-      });
+  let ensec = param == 0 ? $("#avisarNSR").val() :
+    param == 1 ? $("#avisarNS").val() :
+      $("#ensec").val();
 
-    }
+  cedulas = $("#cedulas").text();
+  sector = $("#sector_py").val();
 
+  if (controlCargo(param) != "") {
+    error("Ha ocurrido lo siguiente:\n" + controlCargo(param));
+  } else if (ensec == "sin_seleccion") {
+    error("Debe seleccionar a quien desea avisar");
   } else {
-    alerta(
-      "Error!",
-      "Ha ocurrido lo siguiente:\n" + controlCargo(param),
-      "error"
-    );
-  }
 
+    var form_data = new FormData();
+    form_data.append("nombre", nombre);
+    form_data.append("telefono", telefono);
+    form_data.append("observacion", observacion);
+    form_data.append("ensec", ensec);
+    form_data.append("cedulas", cedulas);
+    form_data.append("sector", sector);
+    form_data.append("socio", socioParam);
+
+    if (param == 0) {
+      let totalImagenes = $("#cargar_imagen_registro_1").prop("files").length;
+      for (let i = 0; i < totalImagenes; i++) {
+        form_data.append("imagen[]", $("#cargar_imagen_registro_1").prop("files")[i]);
+      }
+    } else if (param == 1) {
+      let totalImagenes = $("#cargar_imagen_registro_2").prop("files").length;
+      for (let i = 0; i < totalImagenes; i++) {
+        form_data.append("imagen[]", $("#cargar_imagen_registro_2").prop("files")[i]);
+      }
+    } else {
+      let totalImagenes = $("#cargar_imagen_registro_3").prop("files").length;
+      for (let i = 0; i < totalImagenes; i++) {
+        form_data.append("imagen[]", $("#cargar_imagen_registro_3").prop("files")[i]);
+      }
+    }
+
+    $.ajax({
+      type: "POST",
+      data: form_data,
+      url: `${url_app}datos.php`,
+      dataType: "JSON",
+      contentType: false,
+      processData: false,
+      beforeSend: function () {
+        mostrarLoader();
+      },
+      complete: function () {
+        mostrarLoader("O");
+      },
+      success: function (content) {
+        if (content.error === false) {
+          alerta_ancla("Exito!", content.message, "success");
+          historiaComunicacionDeCedula();
+          $("#cargar_imagen_registro_1").val("");
+          $("#cargar_imagen_registro_2").val("");
+          $("#cargar_imagen_registro_3").val("");
+          $("#obser").val("");
+          $("#observacionesNSR").val("");
+        } else {
+          error(content.message);
+        }
+      },
+    });
+
+  }
 }
 
 function cargo_registro_fucionario() {
@@ -1015,9 +1023,39 @@ function alerta_ancla(titulo, mensaje, icono) {
 }
 /** End Funciones de control **/
 
-function modal_ver_imagen_registro(nombre_imagen) {
-  Swal.fire({
-    imageUrl: `${nombre_imagen}`,
-    imageAlt: "Imagen registrada en historial de llamada"
+function modal_ver_imagen_registro(ruta, id) {
+  document.getElementById('mostrar_imagenes_relamos').innerHTML = '';
+
+  $.ajax({
+    type: 'GET',
+    url: `${url_app}imagenes_de_registros.php`,
+    data: {
+      id: id,
+    },
+    dataType: 'JSON',
+    success: function (response) {
+      if (response.error === false) {
+        let imagenes = response.datos;
+
+        imagenes.map((val) => {
+          let separar_nombre_archivo = val.split('.');
+          let extencion_archivo = separar_nombre_archivo[1];
+
+          if (extencion_archivo != 'pdf') {
+            document.getElementById(
+              'mostrar_imagenes_relamos'
+            ).innerHTML += `<img src="${ruta}/${val}" style="width: 100%; height: auto"> <br> <br>`;
+          } else {
+            document.getElementById(
+              'mostrar_imagenes_relamos'
+            ).innerHTML += `<iframe src="${ruta}/${val}" width=100% height=600></iframe>`;
+          }
+        });
+      } else {
+        error(response.mensaje);
+      }
+    },
   });
+
+  $('#modalVerImagenesRegistro').modal('show');
 }

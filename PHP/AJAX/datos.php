@@ -1,5 +1,4 @@
 <?php
-
 include '../configuraciones.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -8,38 +7,51 @@ require '../../assets/lib/PHPMailer/src/PHPMailer.php';
 require '../../assets/lib/PHPMailer/src/SMTP.php';
 require '../../assets/lib/PHPMailer/src/Exception.php';
 
-
 $conexion = connection(DB);
+$area        = $_SESSION['usuario_py'];
+$nombre      = mb_convert_case($_REQUEST['nombre'], MB_CASE_UPPER, "UTF-8");
+$tel         = $_REQUEST['telefono'];
+$observacion = mysqli_real_escape_string($conexion, $_REQUEST['observacion']);
+$cedula      = $_REQUEST['cedulas'];
+$envioSector = $_REQUEST['ensec'];
+$socio       = $_REQUEST['socio'];
+$sector      = $_REQUEST['sector'];
 
-$area = $_SESSION['usuario_py'];
-$nombre = mb_convert_case($_POST['nombre'], MB_CASE_UPPER, "UTF-8");
-$tel = $_POST['telefono'];
-$fecha = date('Y-m-d H:i:s');
-$observacion = mysqli_real_escape_string($conexion, $_POST['observacion']);
-$cedula = $_POST['cedulas'];
-$envioSector = $_POST['ensec'];
-$socio = $_POST['socio'];
-$sector = $_POST['sector'];
-
-
-if (in_array($_POST['sector'], array('19585073', '50709395'))) {
-	$sector = 'Bajas';
+if ($area == "" || $nombre == "" || $tel == "" || $observacion == "" || $cedula == "" || $socio == "" || $sector == "") {
+	$respuesta['error'] = true;
+	$respuesta['message'] = "Ha ocurrido un error, contacte al administrador";
+	die(json_encode($respuesta));
 }
+
+
+if (in_array($_POST['sector'], array('19585073', '50709395'))) $sector = 'Bajas';
 
 
 if (count($_FILES) > 0) {
 	$imagen = $_FILES['imagen'];
 	$tipo = $imagen['type'];
 
-	if ($tipo == "image/jpg" || $tipo == "image/jpeg" || $tipo == "image/png") {
-		$archivo = insert_registro_con_imagen($imagen, $cedula, $nombre, $tel, $fecha, $sector, $observacion, $envioSector, $socio);
-	} else {
+	if (controlarExtension($imagen, array("png", "jpeg", "jpg", "pdf")) <= 0) {
 		$respuesta['error'] = true;
-		$respuesta['message'] = "La imagen cargada solo puede ser de tipo .jpg, .jpeg o .png";
+		$respuesta['message'] = "Los archivos cargados solo pueden ser de tipo .jpg, .jpeg, .png o .pdf";
+		die(json_encode($respuesta));
+	}
+
+	$archivo = insert_registro_con_imagen($imagen, $cedula, $nombre, $tel, $sector, $observacion, $envioSector, $socio);
+
+	if ($archivo === false) {
+		$respuesta['error'] = true;
+		$respuesta['message'] = "Error al cargar el registro";
 		die(json_encode($respuesta));
 	}
 } else {
-	$insert = insert_registro($cedula, $nombre, $tel, $fecha, $sector, $observacion, $envioSector, $socio);
+	$insert = insert_registro($cedula, $nombre, $tel, $sector, $observacion, $envioSector, $socio);
+
+	if ($archivo === false) {
+		$respuesta['error'] = true;
+		$respuesta['message'] = "Error al cargar el registro";
+		die(json_encode($respuesta));
+	}
 }
 
 
@@ -76,47 +88,54 @@ echo json_encode($respuesta);
 
 
 
-
-function insert_registro_con_imagen($documento, $cedula, $nombre, $telefono, $fecha, $sector, $observacion, $envioSector, $socio)
+function insert_registro_con_imagen($documento, $cedula, $nombre, $telefono, $sector, $observacion, $envioSector, $socio)
 {
-	global $conexion;
-	$tabla = TABLA_REGISTROS_PY;
+	$conexion = connection(DB);
+	$tabla = TABLA_IMAGENES_REGISTRO;
+	$errores = 0;
 
-	$extension_archivo = strtolower(pathinfo(basename($documento["name"]), PATHINFO_EXTENSION));
-	$nombre_archivo =  generarHash(20) . '.' . $extension_archivo;
-	$ruta_origen = $documento["tmp_name"];
-
-	$destino = "../../assets/documentos/registros/" . $nombre_archivo;
-	//die(var_dump($destino));
-
-	if (move_uploaded_file($ruta_origen, $destino)) {
-		$insert_carga = "INSERT INTO {$tabla}(cedula, nombre, telefono, fecha_registro, sector, observaciones, envioSector, activo, socio, nombre_imagen)
-		VALUES('{$cedula}', '{$nombre}', '{$telefono}', '{$fecha}', '{$sector}', '{$observacion}', '{$envioSector}', 1, {$socio}, '{$nombre_archivo}')";
-		$respuesta = mysqli_query($conexion, $insert_carga);
-	} else {
+	$id_insert = insert_registro($cedula, $nombre, $telefono, $sector, $observacion, $envioSector, $socio);
+	if ($id_insert === false) {
 		$respuesta['error'] = true;
-		$respuesta['message'] = "Error al cargar el archivo";
+		$respuesta['message'] = "Error al cargar el registro";
 		die(json_encode($respuesta));
 	}
 
-	return $respuesta;
+	for ($i = 0; $i < count($documento["name"]); $i++) {
+		$extension_archivo = strtolower(pathinfo(basename($documento["name"][$i]), PATHINFO_EXTENSION));
+		$nombre_archivo =  generarHash(50) . '.' . $extension_archivo;
+		$ruta_origen = $documento["tmp_name"][$i];
+		$destino = "../../assets/documentos/registros/" . $nombre_archivo;
+
+		if (move_uploaded_file($ruta_origen, $destino)) {
+			$insert_imagenes = "INSERT INTO {$tabla} (id_registro, nombre_imagen) VALUES ('$id_insert', '$nombre_archivo')";
+			$respuesta = mysqli_query($conexion, $insert_imagenes) == true ? $errores : $errores++;
+		} else {
+			$respuesta['error'] = true;
+			$respuesta['message'] = "Error al cargar el archivo";
+			die(json_encode($respuesta));
+		}
+	}
+
+	return $errores > 0 ? false : true;
 }
 
-function insert_registro($cedula, $nombre, $telefono, $fecha, $sector, $observacion, $envioSector, $socio)
+
+function insert_registro($cedula, $nombre, $telefono, $sector, $observacion, $envioSector, $socio)
 {
-	global $conexion;
+	$conexion = connection(DB);
 	$tabla = TABLA_REGISTROS_PY;
 
 	$sql = "INSERT INTO {$tabla}(cedula, nombre, telefono, fecha_registro, sector, observaciones, envioSector, activo, socio)
-	VALUES('{$cedula}', '{$nombre}', '{$telefono}', '{$fecha}', '{$sector}', '{$observacion}', '{$envioSector}', 1, {$socio})";
+	VALUES('{$cedula}', '{$nombre}', '{$telefono}', NOW(), '{$sector}', '{$observacion}', '{$envioSector}', 1, {$socio})";
 	$consulta = mysqli_query($conexion, $sql);
 
-	return $consulta;
+	return $consulta == true ? mysqli_insert_id($conexion) : false;
 }
 
 function obtener_email_envioSector($envioSector)
 {
-	global $conexion;
+	$conexion = connection(DB);
 	$tabla = TABLA_USUARIOS;
 
 	$sql = "SELECT email, avisar_a FROM {$tabla} WHERE id = '$envioSector'";
@@ -124,8 +143,6 @@ function obtener_email_envioSector($envioSector)
 
 	return mysqli_fetch_assoc($consulta);
 }
-
-
 
 function htmlBodyEmail($texto)
 {
@@ -224,6 +241,21 @@ function EnviarMail($sector, $datos_sector, $bodyHtml, $ccs = null)
 	}
 }
 
+function controlarExtension($files, $tipo)
+{
+	$validar_extension = $tipo;
+	$valido = 0;
+	for ($i = 0; $i < count($files["name"]); $i++) {
+		$extension_archivo = strtolower(pathinfo(basename($files["name"][$i]), PATHINFO_EXTENSION));
+
+		if (in_array($extension_archivo, $validar_extension)) {
+			$valido++;
+		} else {
+			$valido = 0;
+		}
+	}
+	return $valido;
+}
 
 function generarHash($largo)
 {

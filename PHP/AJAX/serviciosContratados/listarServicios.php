@@ -6,47 +6,111 @@ $tabla2 = TABLA_SERVICIOS_CODIGOS;
 $tabla3 = TABLA_BAJAS;
 $cedula = $_GET['cedula'];
 
-$q = "SELECT pps.servicio AS nro_servicio, sc.servicio, pps.hora, pps.importe FROM {$tabla1} AS pps INNER JOIN {$tabla2} AS sc ON pps.servicio = sc.nro_servicio WHERE cedula = {$cedula} ORDER BY pps.id DESC";
-$r = mysqli_query($conexion, $q);
-if (mysqli_num_rows($r) != 0) {
-	while ($f = mysqli_fetch_assoc($r)) {
-		$nroServicio 	= $f['nro_servicio'];
-		$servicio 		= $f['servicio'];
-		$horas 			= $f['hora'];
-		$importe 		= $f['importe'];
+
+$productos_socio = obtener_productos($cedula);
+
+//Si encuentra los productos en padrón
+if (mysqli_num_rows($productos_socio) > 0) {
+
+	while ($row = mysqli_fetch_assoc($productos_socio)) {
+		$nroServicio = $row['nro_servicio'];
+		$servicio 	 = $row['servicio'];
+		$horas 		 = $row['hora'];
+		$importe 	 = $row['importe'];
 
 		$repuesta[] = array(
-			'nroServicio'	=> $nroServicio,
-			'servicio'		=> $servicio,
-			'horas'			=> $horas,
-			'importe'		=> $importe
+			'nroServicio' => $nroServicio,
+			'servicio'	  => obtener_servicio($nroServicio),
+			'horas'		  => $horas,
+			'importe'	  => $importe
 		);
 	}
-} else {
+}
 
-	$conexion = connection(DB);
-	$q = "SELECT servicio_contratado, horas_contratadas, importe FROM {$tabla3} WHERE cedula_socio = {$cedula} ORDER BY id DESC";
-	$r = mysqli_query($conexion, $q);
-	$f1 = mysqli_fetch_assoc($r);
-	$f['servicio_contratado'] 	= explode(', ', $f1['servicio_contratado']);
-	$f['horas_contratadas'] 	= explode(', ', $f1['horas_contratadas']);
-	$f['importe'] 				= explode(', ', $f1['importe']);
+//Si no encuentra los productos en padrón
+if (mysqli_num_rows($productos_socio) <= 0) {
+	$result_bajas = obtener_datos_baja_si_existe($cedula);
+	$datos['servicio_contratado'] = explode(', ', $result_bajas['servicio_contratado']);
+	$datos['horas_contratadas']   = explode(', ', $result_bajas['horas_contratadas']);
+	$datos['importe'] 			  = explode(', ', $result_bajas['importe']);
 
 	$i = 0;
 	$repuesta = array('error' => true);
-	$conexion = connection(DB_AFILIACION_PARAGUAY);
-	while (isset($f['servicio_contratado'][$i]) && $f['servicio_contratado'][$i] != null) {
-		$servicio_contratado = $f['servicio_contratado'][$i];
-		$q = "SELECT servicio FROM {$tabla2} WHERE nro_servicio = {$servicio_contratado} ORDER BY id DESC LIMIT 1";
-		$r = mysqli_query($conexion, $q);
-		$f1 = mysqli_fetch_assoc($r);
+
+	while (isset($datos['servicio_contratado'][$i]) && $datos['servicio_contratado'][$i] != null) {
+		$servicio_contratado = $datos['servicio_contratado'][$i];
 		$repuesta[] = array(
-			'nroServicio' 	=> $f['servicio_contratado'][$i],
-			'servicio' 		=> $f1['servicio'],
-			'horas' 		=> $f['horas_contratadas'][$i],
-			'importe' 		=> $f['importe'][$i],
+			'nroServicio' 	=> $datos['servicio_contratado'][$i],
+			'servicio' 		=> $obtener_servicio($datos['servicio_contratado']),
+			'horas' 		=> $datos['horas_contratadas'][$i],
+			'importe' 		=> $datos['importe'][$i],
 		);
 		++$i;
 	}
 }
+
+
 echo json_encode($repuesta);
+
+
+
+
+function obtener_productos($cedula)
+{
+	$conexion = connection(DB_AFILIACION_PARAGUAY);
+	$tabla1 = TABLA_PADRON_PRODUCTO_SOCIO;
+	$tabla2 = TABLA_SERVICIOS_CODIGOS;
+
+	$sql = "SELECT 
+		pps.servicio AS nro_servicio, 
+		sc.servicio, 
+		pps.hora, 
+		pps.importe 
+	  FROM 
+		{$tabla1} pps 
+		INNER JOIN {$tabla2} sc ON pps.servicio = sc.nro_servicio 
+	  WHERE 
+		cedula = '$cedula' 
+		ORDER BY pps.id DESC";
+	$consulta = mysqli_query($conexion, $sql);
+
+	return $consulta;
+}
+
+function obtener_datos_baja_si_existe($cedula)
+{
+	$conexion = connection(DB);
+	$tabla = TABLA_BAJAS;
+
+	$sql = "SELECT 
+		servicio_contratado, 
+		horas_contratadas, 
+		importe 
+	  FROM 
+		{$tabla} 
+	  WHERE 
+		cedula_socio = '$cedula' 
+		ORDER BY id DESC";
+	$consulta = mysqli_query($conexion, $sql);
+	$resultados = mysqli_fetch_assoc($consulta);
+
+	return $resultados;
+}
+
+function obtener_servicio($nro_servicio)
+{
+	$conexion = connection(DB_MOTOR_PRECIOS_PY);
+	$tabla = TABLA_SERVICIOS;
+
+	$sql = "SELECT 
+		nombre 
+	  FROM 
+		{$tabla} 
+	  WHERE 
+		numero_servicio = '$nro_servicio' 
+		ORDER BY id DESC";
+	$consulta = mysqli_query($conexion, $sql);
+	$resultados = mysqli_fetch_assoc($consulta)['nombre'];
+
+	return $resultados;
+}

@@ -7,7 +7,7 @@ date_default_timezone_set('America/Montevideo');
 define("PATH_APP", __DIR__);
 
 const PRODUCCION = true; // para definir si es test o produccion la APP
-const URL_APP        = PRODUCCION ? 'http://192.168.1.250:82/crm_py'                   : 'http://192.168.1.250:82/crm_py_test';
+const URL_APP        = PRODUCCION ? 'http://192.168.1.250:82/crm_py'                             : 'http://192.168.1.250:82/crm_py_test';
 const URL_DOCUMENTOS = PRODUCCION ? 'http://192.168.1.250:82/crm_py/assets/documentos/registros' : 'http://192.168.1.250:82/crm_py_test/assets/documentos/registros';
 
 error_reporting(PRODUCCION ? 0 : E_ALL);
@@ -53,6 +53,7 @@ const DB_CALL_PROD                = array("host" => "192.168.1.13", "user" => "r
 const DB_CONTROL_UNIFORMES_PROD   = array("host" => "192.168.1.250", "user" => "root", "password" => "sist.2k8", "db" => "control_uniformes");
 const DB_VIDA_TE_LLEVA_PROD       = array("host" => "192.168.13.10", "user" => "root", "password" => "sist.2k8", "db" => "vida_te_lleva");
 const DB_COBRA_PROD               = array("host" => "192.168.250.11", "user" => "root", "password" => "sist.2k8", "db" => "cobra");
+const DB_MOTOR_PRECIOS_PY_PROD    = array("host" => "192.168.13.10", "user" => "root", "password" => "sist.2k8", "db" => "motor_precios_py");
 
 
 
@@ -72,6 +73,7 @@ const DB_CALL_TEST                = array("host" => "192.168.1.13", "user" => "r
 const DB_CONTROL_UNIFORMES_TEST   = array("host" => "192.168.1.250", "user" => "root", "password" => "sist.2k8", "db" => "control_uniformes_test");
 const DB_VIDA_TE_LLEVA_TEST       = array("host" => "192.168.13.10", "user" => "root", "password" => "sist.2k8", "db" => "vida_te_lleva");
 const DB_COBRA_TEST               = array("host" => "192.168.250.11", "user" => "root", "password" => "sist.2k8", "db" => "cobra");
+const DB_MOTOR_PRECIOS_PY_TEST    = array("host" => "192.168.13.10", "user" => "root", "password" => "sist.2k8", "db" => "motor_precios_py");
 
 
 //BD PROD O TEST
@@ -90,6 +92,7 @@ const DB_CALL                = PRODUCCION ? DB_CALL_PROD                : DB_CAL
 const DB_CONTROL_UNIFORMES   = PRODUCCION ? DB_CONTROL_UNIFORMES_PROD   : DB_CONTROL_UNIFORMES_TEST;
 const DB_VIDA_TE_LLEVA       = PRODUCCION ? DB_VIDA_TE_LLEVA_PROD       : DB_VIDA_TE_LLEVA_TEST;
 const DB_COBRA               = PRODUCCION ? DB_COBRA_PROD               : DB_COBRA_TEST;
+const DB_MOTOR_PRECIOS_PY    = PRODUCCION ? DB_MOTOR_PRECIOS_PY_PROD    : DB_MOTOR_PRECIOS_PY_TEST;
 
 
 //TABLAS BD
@@ -116,6 +119,7 @@ const TABLA_PRECIO_UNIFORME            = "precio_uniforme";
 const TABLA_UNI_COMENTARIO             = "uni_comentario";
 const TABLA_UNI_NO_DEVUELTO            = "uni_no_devuelto";
 const TABLA_HISTORICO_ALERTA           = "historico_alerta_PARAGUAY";
+const TABLA_IMAGENES_REGISTRO          = "imagenes_registro";
 
 
 //SERVER - COORDINACIÓN
@@ -142,6 +146,7 @@ const TABLA_TIPO_PRODUCTO_TEMPORAL      = "tipo_productos_temporal";
 const TABLA_PADRON_SOCIOS_BRASIL = "padron_socios_brasil";
 const TABLA_PADRON_COMAG         = "padron_comag";
 const TABLA_COBRANZAS            = "cobranzas";
+const TABLA_SERVICIOS            = "servicios";
 
 
 //SERVER - MOODLE
