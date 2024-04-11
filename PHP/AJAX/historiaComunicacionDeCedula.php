@@ -24,7 +24,7 @@ if (isset($_GET['ID'])) {
 	$cedula = $_GET['CI'];
 	$usuario = $_SESSION['usuario_py'];
 	$sector = $_SESSION['nivel_py'] != 3  ? "AND sector='$usuario'"  : '';
-	$q = "SELECT id, fecha_registro, sector, observaciones, socio, baja, nombre_imagen, envioSector FROM {$tabla} WHERE cedula = $cedula $sector";
+	$q = "SELECT id, fecha_registro, sector, observaciones, socio, baja, nombre_imagen, envioSector FROM {$tabla} WHERE cedula = $cedula $sector ORDER BY id DESC";
 	$r = mysqli_query($conexion, $q);
 	if (mysqli_num_rows($r) != 0) {
 		while ($row = mysqli_fetch_assoc($r)) {

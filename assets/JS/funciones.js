@@ -621,7 +621,7 @@ function agregarFiliales() {
 function historiaComunicacionDeCedula() {
   $("#example1").DataTable().destroy();
   $.ajax({
-    url: url_app + "historiaComunicacionDeCedula.php",
+    url: `${url_app}historiaComunicacionDeCedula.php`,
     type: "GET",
     dataType: "JSON",
     data: { CI: $("#ci").val() },
@@ -632,6 +632,7 @@ function historiaComunicacionDeCedula() {
     if (!datos.noRegistros) {
       $.each(datos, function (index, el) {
         let nuevaLinea = "<tr>";
+        nuevaLinea += "<td>" + el.id + "</td>";
         nuevaLinea += "<td>" + el.fecha + "</td>";
         nuevaLinea += "<td>" + el.sector + "</td>";
         nuevaLinea += "<td>" + el.socio + "</td>";
