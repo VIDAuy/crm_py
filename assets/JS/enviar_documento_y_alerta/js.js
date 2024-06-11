@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('#pdfmuestra').css('display', 'none');
 
 
-    //setInterval(alertar_funcionario_estado_documento, 1000);
+    //setInterval(alertar_funcionario_estado_documento, 30000);
 });
 
 function cargar_documento_y_alertar() {
@@ -186,7 +186,7 @@ function tabla_documentos_cargados() {
         "order": [[0, 'asc']],
         "lengthChange": false,
         "ordering": false,
-        language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+        language: { url: `${url}assets/js/lenguage.json` },
     });
 }
 
@@ -201,7 +201,7 @@ function tabla_alertas_respondidas() {
         "ordering": false,
         "lengthChange": false,
         "searching": false,
-        language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+        language: { url: `${url}assets/js/lenguage.json` },
     });
 }
 

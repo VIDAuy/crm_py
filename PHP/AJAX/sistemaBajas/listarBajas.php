@@ -16,9 +16,7 @@ if (isset($_GET['id'])) {
 	if ($f['filial_solicitud'] == $f['filial_socio']) {
 		$conexion = connection(DB_ABMMOD);
 		$nroFilial = $f['filial_solicitud'];
-		$q2 = "SELECT filial 
-					FROM filiales_codigos 
-					WHERE nro_filial = '$nroFilial'";
+		$q2 = "SELECT filial FROM filiales_codigos WHERE nro_filial = '$nroFilial'";
 		$r2 = mysqli_query($conexion, $q2);
 		$f2 = mysqli_fetch_assoc($r2);
 		$f['filial_solicitud'] 	= $f2['filial'];
@@ -27,16 +25,12 @@ if (isset($_GET['id'])) {
 	} else {
 		$conexion = connection(DB_ABMMOD);
 		$nroFilial = $f['filial_solicitud'];
-		$q2 = "SELECT filial 
-					FROM filiales_codigos 
-					WHERE nro_filial = '$nroFilial'";
+		$q2 = "SELECT filial FROM filiales_codigos WHERE nro_filial = '$nroFilial'";
 		$r2 = mysqli_query($conexion, $q2);
 		$f2 = mysqli_fetch_assoc($r2);
 		$f['filial_solicitud'] 	= $f2['filial'];
 		$nroFilial = $f['filial_socio'];
-		$q2 = "SELECT filial 
-					FROM filiales_codigos 
-					WHERE nro_filial = '$nroFilial'";
+		$q2 = "SELECT filial FROM filiales_codigos WHERE nro_filial = '$nroFilial'";
 		$r2 = mysqli_query($conexion, $q2);
 		$f2 = mysqli_fetch_assoc($r2);
 		$f['filial_socio'] 	= $f2['filial'];
@@ -57,9 +51,9 @@ if (isset($_GET['id'])) {
 
 	if (isset($_GET['where']) && ($_GET['where'] == 'En Gestión' || $_GET['where'] == 'Pendiente')) {
 		$where = $_GET['where'];
-		$q = "SELECT id, filial_solicitud, fecha_ingreso_baja, observaciones, nombre_socio, cedula_socio, motivo_baja, fecha_inicio_gestion, telefono_contacto, celular_contacto FROM {$tabla} WHERE estado = '$where' $condicion ORDER BY fecha_ingreso_baja DESC";
+		$q = "SELECT id, filial_solicitud, fecha_ingreso_baja, observaciones, nombre_socio, cedula_socio, motivo_baja, fecha_inicio_gestion, telefono_contacto, celular_contacto FROM {$tabla} WHERE estado = '$where' $condicion AND estado_supervisor != 'Continua' ORDER BY fecha_ingreso_baja DESC";
 	} else {
-		$q = "SELECT id, filial_solicitud, fecha_ingreso_baja, observaciones, nombre_socio, cedula_socio, motivo_baja, fecha_inicio_gestion, telefono_contacto, celular_contacto FROM {$tabla} WHERE activo = 1 $condicion ORDER BY fecha_ingreso_baja DESC";
+		$q = "SELECT id, filial_solicitud, fecha_ingreso_baja, observaciones, nombre_socio, cedula_socio, motivo_baja, fecha_inicio_gestion, telefono_contacto, celular_contacto FROM {$tabla} WHERE activo = 1 $condicion AND estado_supervisor != 'Continua' ORDER BY fecha_ingreso_baja DESC";
 	}
 
 	$r = mysqli_query($conexion, $q);
@@ -74,14 +68,10 @@ if (isset($_GET['id'])) {
 			$nombreS 			= $f['nombre_socio'];
 			$cedula 			= $f['cedula_socio'];
 			$motivo 			= $f['motivo_baja'];
-			$fechaGestion 		= ($f['fecha_inicio_gestion'] != null)
-				? 'Sí'
-				: 'No';
+			$fechaGestion 		= ($f['fecha_inicio_gestion'] != null) ? 'Sí' : 'No';
 			$telefono = $f['telefono_contacto'] . ' ' . $f['celular_contacto'];
 			$filial 			= $f['filial_solicitud'];
-			$q = "SELECT filial
-						FROM filiales_codigos
-						WHERE nro_filial = $filial";
+			$q = "SELECT filial FROM filiales_codigos WHERE nro_filial = $filial";
 			$f2 = mysqli_fetch_assoc(mysqli_query($conexion, $q));
 			$filial 			= $f2['filial'];
 			$respuesta[] = array(

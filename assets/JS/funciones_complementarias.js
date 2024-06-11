@@ -39,7 +39,7 @@ function tabla(
             data: datos,
         },
         columns,
-        language: { url: `${url_app}js/config_tabla.json` },
+        language: { url: `${url}assets/js/lenguage.json` },
 
         retrieve: true,
         order: [[0, "desc"]],
@@ -77,7 +77,7 @@ function tabla_async(
                 data: datos,
             },
             columns,
-            language: { url: `${url_app}js/config_tabla.json` },
+            language: { url: `${url}assets/js/lenguage.json` },
 
             retrieve: true,
             order: [[0, "desc"]],
@@ -106,7 +106,7 @@ function tablaNormal(div, url, columns, recargar = false) {
             'url': url,
         },
         columns: columns,
-        "language": { url: `${url_app}js/config_tabla.json` },
+        "language": { url: `${url}assets/js/lenguage.json` },
 
         retrieve: true,
         order: [[0, 'desc']],

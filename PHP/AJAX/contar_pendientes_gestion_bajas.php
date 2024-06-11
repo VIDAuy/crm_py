@@ -21,7 +21,8 @@ function cantidad_gestiones_pendientes($usuario)
     if ($usuario == "1707544") {
         $sql = "SELECT count(id) AS cantidad FROM {$tabla} WHERE fecha_fin_gestion IS NULL AND fecha_gestion_supervisor IS NULL AND activo = 1";
     } else if ($usuario == "Calidaduy") {
-        $sql = "SELECT count(id) AS cantidad FROM {$tabla} WHERE estado_supervisor = 'En Gestión' AND fecha_fin_gestion IS NULL AND fecha_gestion_supervisor IS NOT NULL AND activo = 1";
+        //$sql = "SELECT count(id) AS cantidad FROM {$tabla} WHERE estado_supervisor = 'En Gestión' AND fecha_fin_gestion IS NULL AND fecha_gestion_supervisor IS NOT NULL AND activo = 1";
+        $sql = "SELECT count(id) AS cantidad FROM {$tabla} WHERE estado = 'Pendiente' AND estado_supervisor != 'Continua' AND activo = 1";
     }
 
     $consulta = mysqli_query($conexion, $sql);

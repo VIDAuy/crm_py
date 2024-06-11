@@ -10,6 +10,6 @@ function datosCoordina() {
 		],
 		"order": [[0, 'asc']],
 		"bDestroy": true,
-		language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+		language: { url: `${url}assets/js/lenguage.json` },
 	});
 }

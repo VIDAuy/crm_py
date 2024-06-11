@@ -12,5 +12,5 @@ function getAfiliacionesCompetencia() {
 
 $(document).ready(function() {
     getAfiliacionesCompetencia();
-    let interval = window.setInterval(getAfiliacionesCompetencia, 5000);
+    let interval = window.setInterval(getAfiliacionesCompetencia, 30000);
 });

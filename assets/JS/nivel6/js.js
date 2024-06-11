@@ -256,7 +256,7 @@ function licencia_acompanante() {
 
 
                     },
-                    language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+                    language: { url: `${url}assets/js/lenguage.json` },
                     dom: 'Bfrtip',
                     buttons: ['excel'],
                     "footerCallback": function (row, data, start, end, display) {
@@ -344,7 +344,7 @@ function horas_acompanante(cedula, fecha_desde, fecha_hasta) {
                         }],
                     "order": [[0, 'asc']],
                     "bDestroy": true,
-                    language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+                    language: { url: `${url}assets/js/lenguage.json` },
                     dom: 'Bfrtip',
                     buttons: ['excel'],
                 });
@@ -377,7 +377,7 @@ function faltas_acompanante(cedula, fecha_desde, fecha_hasta) {
         ],
         "bDestroy": true,
         "order": [[0, 'asc']],
-        language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+        language: { url: `${url}assets/js/lenguage.json` },
         dom: 'Bfrtip',
         buttons: ['excel'],
     });
@@ -416,7 +416,7 @@ function coordinacion_socio(cedula) {
                     ],
                     "bDestroy": true,
                     "order": [[0, 'asc']],
-                    language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+                    language: { url: `${url}assets/js/lenguage.json` },
                     dom: 'Bfrtip',
                     buttons: ['excel'],
                 });
@@ -466,7 +466,7 @@ function cobranza_socio(cedula) {
                     ],
                     "bDestroy": true,
                     "order": [[0, 'desc']],
-                    language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+                    language: { url: `${url}assets/js/lenguage.json` },
                     dom: 'Bfrtip',
                     buttons: ['excel'],
                 });
@@ -517,7 +517,7 @@ function productos_socio(cedula) {
                     ],
                     "bDestroy": true,
                     "order": [[0, 'asc']],
-                    language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+                    language: { url: `${url}assets/js/lenguage.json` },
                     dom: 'Bfrtip',
                     buttons: ['excel'],
                 });
@@ -698,7 +698,7 @@ function registro_completo_licencias_acompanantes(fecha_desde, fecha_hasta) {
 
 
                     },
-                    language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+                    language: { url: `${url}assets/js/lenguage.json` },
                     dom: 'Bfrtip',
                     buttons: ['excel'],
                     rowGroup: {
@@ -735,7 +735,7 @@ function registro_completo_faltas_acompanantes(fecha_desde, fecha_hasta) {
         ],
         "bDestroy": true,
         "order": [[0, 'desc']],
-        language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+        language: { url: `${url}assets/js/lenguage.json` },
         dom: 'Bfrtip',
         buttons: ['excel'],
     });
@@ -770,7 +770,7 @@ function registro_completo_horas_acompanantes(fecha_desde, fecha_hasta) {
             }],
         "order": [[0, 'asc']],
         "bDestroy": true,
-        language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+        language: { url: `${url}assets/js/lenguage.json` },
         dom: 'Bfrtip',
         buttons: ['excel'],
     });
@@ -811,7 +811,7 @@ function registro_capacitacion_acompanantes(fecha_desde, fecha_hasta) {
                     ],
                     "order": [[3, 'desc']],
                     "bDestroy": true,
-                    language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+                    language: { url: `${url}assets/js/lenguage.json` },
                     dom: 'Bfrtip',
                     buttons: ['excel'],
                 });

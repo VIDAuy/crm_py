@@ -1,14 +1,16 @@
 ﻿$(document).ready(function () {
   //alertas_de_vida_te_lleva();
-  //setInterval(alertas_de_vida_te_lleva, 5000);
+  //setInterval(alertas_de_vida_te_lleva, 30000);
 
   alertar_gestion_bajas();
-  setInterval(alertar_gestion_bajas, 5000);
+  setInterval(alertar_gestion_bajas, 30000);
 });
 
 const produccion = true;
 const app = produccion ? "crm_py" : "crm_py_test";
+const url = `http://192.168.1.250:82/${app}/`;
 const url_app = "http://192.168.1.250:82/" + app + "/PHP/AJAX/";
+
 
 // Funciones pasivas
 
@@ -46,7 +48,7 @@ $(function () {
         $("#bq").text(content.message);
       },
     });
-  }, 5000);
+  }, 30000);
 
   agregarFiliales();
 });
@@ -490,7 +492,7 @@ function consulta_licencias() {
               });
           },
           language: {
-            url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+            url: `${url}assets/js/lenguage.json`,
           },
           footerCallback: function (row, data, start, end, display) {
             total_tomados = this.api()
@@ -565,7 +567,7 @@ function buscarHorasAcompanante(cedula, fecha_desde, fecha_hasta) {
           order: [[0, "asc"]],
           bDestroy: true,
           language: {
-            url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+            url: `${url}assets/js/lenguage.json`,
           },
         });
 
@@ -598,7 +600,7 @@ function buscarFaltasAcompanante(cedula, fecha_desde, fecha_hasta) {
     ],
     bDestroy: true,
     order: [[0, "asc"]],
-    language: { url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json" },
+    language: { url: `${url}assets/js/lenguage.json` },
   });
 
   $("#modalFaltasAcompanantes").modal("show");
@@ -652,7 +654,7 @@ function historiaComunicacionDeCedula() {
         info: true,
         order: [[0, "desc"]],
         language: {
-          url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+          url: `${url}assets/js/lenguage.json`,
         },
       });
       stateSave: true;
@@ -850,7 +852,7 @@ function historiaComunicacionDeCedula_funcionarios() {
     ],
     bDestroy: true,
     order: [[0, "desc"]],
-    language: { url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json" },
+    language: { url: `${url}assets/js/lenguage.json` },
   });
 }
 
