@@ -1,35 +1,93 @@
 <?php
 include '../../configuraciones.php';
-$conexion = connection(DB);
-$tabla = TABLA_BAJAS;
+
+$tabla["data"] = [];
+
+$obtener_bajas = obtener_bajas();
 
 
-$q = "SELECT id, filial_solicitud, nombre_socio, cedula_socio, motivo_baja, fecha_ingreso_baja, telefono_contacto, celular_contacto, estado FROM {$tabla}";
-$r = mysqli_query($conexion, $q);
-mysqli_close($conexion);
-
-
-$conexion = connection(DB_ABMMOD);
-
-while ($row = mysqli_fetch_assoc($r)) {
-	$row['fecha_ingreso_baja'] = new DateTime($row['fecha_ingreso_baja']);
-	$row['fecha_ingreso_baja'] = $row['fecha_ingreso_baja']->format('d/m/Y');
-	$filial = $row['filial_solicitud'];
-	$q = "SELECT filial
-				FROM filiales_codigos
-				WHERE nro_filial = $filial";
-	$f2 = mysqli_fetch_assoc(mysqli_query($conexion, $q));
-	$row['filial_solicitud'] = $f2['filial'];
-
+while ($row = mysqli_fetch_assoc($obtener_bajas)) {
+	$id = $row['id'];
 	$cedula = $row['cedula_socio'];
-	$q = "SELECT radio
-				FROM padron_datos_socio
-				WHERE cedula = '$cedula'";
-	$f2 = mysqli_fetch_assoc(mysqli_query($conexion, $q));
-	$row['radio'] = ($f2['radio'] != null)
-		? $f2['radio']
-		: ' - - ';
-	$f[] = $row;
+	$nombre = $row['nombre_socio'];
+	$telefono = $row['telefono_contacto'] != "" ? $row['telefono_contacto'] : "-";
+	$celular = $row['celular_contacto'] != "" ? $row['celular_contacto'] : "-";
+
+	$datos_padron = obtener_datos_padron($cedula);
+	$radio = $datos_padron != false ? $datos_padron['radio'] : ' - - ';
+
+	$motivo = $row['motivo_baja'];
+	$fecha_ingreso_baja = date("d/m/Y", strtotime($row['fecha_ingreso_baja']));
+	$estado = $row['estado'];
+	$filial = $row['filial_solicitud'];
+	$filial = obtener_filiales_codigos($filial)['filial'];
+	$btnAcciones = "<button class='btn btn-sm btn-outline-primary' onclick='modalMasInfoHistorialDeBajas(`" . $id . "`);'>+ info</button>";
+
+
+	$tabla["data"][] = [
+		'id' => $id,
+		'cedula_socio' => $cedula,
+		'nombre_socio' => $nombre,
+		'telefono_contacto' => $telefono,
+		'celular_contacto' => $celular,
+		'radio' => $radio,
+		'motivo_baja' => $motivo,
+		'fecha_ingreso_baja' => $fecha_ingreso_baja,
+		'estado' => $estado,
+		'filial_solicitud' => $filial,
+		'acciones' => $btnAcciones,
+	];
 }
 
-echo json_encode($f);
+echo json_encode($tabla);
+
+
+
+
+function obtener_bajas()
+{
+	$conexion = connection(DB);
+	$tabla = TABLA_BAJAS;
+
+	$sql = "SELECT 
+			 id, 
+			 filial_solicitud, 
+			 nombre_socio, 
+			 cedula_socio, 
+			 motivo_baja, 
+			 fecha_ingreso_baja, 
+			 telefono_contacto, 
+			 celular_contacto, 
+			 estado 
+			FROM 
+			 {$tabla}";
+	$consulta = mysqli_query($conexion, $sql);
+
+	return $consulta;
+}
+
+
+function obtener_filiales_codigos($filial)
+{
+	$conexion = connection(DB_ABMMOD);
+	$tabla = TABLA_FILIALES_CODIGOS;
+
+	$sql = "SELECT filial FROM {$tabla} WHERE nro_filial = $filial";
+	$consulta = mysqli_query($conexion, $sql);
+	$resultados = mysqli_fetch_assoc($consulta);
+
+	return $resultados;
+}
+
+
+function obtener_datos_padron($cedula)
+{
+	$conexion = connection(DB_ABMMOD);
+	$tabla = TABLA_PADRON_DATOS_SOCIO;
+
+	$sql = "SELECT radio FROM {$tabla} WHERE cedula = '$cedula'";
+	$consulta = mysqli_query($conexion, $sql);
+	$resultados = mysqli_fetch_row($consulta) > 0 ? mysqli_fetch_assoc($consulta) : false;
+
+	return $resultados;
+}

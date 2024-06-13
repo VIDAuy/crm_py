@@ -1,0 +1,181 @@
+<!-- Modal -->
+<div class="modal fade" id="modalInformacionDetalladaBaja" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 2000;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+          <span id="MIDBtitulo"></span>
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="d-flex justify-content-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+            <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+              <path
+                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z">
+              </path>
+            </symbol>
+          </svg>
+
+          <div class="alert alert-warning border-warning d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:">
+              <use xlink:href="#exclamation-triangle-fill"></use>
+            </svg>
+            <div id="MIDBestadoActual">
+            </div>
+          </div>
+        </div>
+
+
+        <div class="alert alert-info border-info" role="alert">
+          <input type="hidden" id="MIDBid" />
+          <h3 class="mb-3">Información del socio:</h3>
+          <div class="row">
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBnombre" placeholder="Nombre completo" disabled>
+                <label for="MIDBnombre">Nombre completo:</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBcedula" placeholder="Cédula" disabled>
+                <label for="MIDBcedula">Cédula:</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBfilialS" placeholder="Filial" disabled>
+                <label for="MIDBfilialS">Filial:</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBmotivoB" placeholder="Motivo de baja" disabled>
+                <label for="MIDBmotivoB">Motivo de baja:</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <button type="button" class="btn btn-primary col-8 mt-4 mb-5" onclick="listar_servicios_del_socio(1, true)">
+            Información sobre los servicios del usuario
+          </button>
+        </div>
+
+        <div class="alert alert-info border-info" role="alert">
+          <h3 class="mb-3">Información de contacto:</h3>
+          <div class="row">
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBnombreC" placeholder="Nombre" disabled>
+                <label for="MIDBnombreC">Nombre:</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBapellido" placeholder="Apellido" disabled>
+                <label for="MIDBapellido">Apellido:</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBtel" placeholder="Telefono" disabled>
+                <label for="MIDBtel">Telefono:</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBcel" placeholder="Celular" disabled>
+                <label for="MIDBcel">Celular:</label>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="mb-3">Información de gestión:</h3>
+          <div class="row">
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBnombreF" placeholder="Nombre funcionario" disabled>
+                <label for="MIDBnombreF">Nombre funcionario:</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBfilialF" placeholder="Filial funcionario" disabled>
+                <label for="MIDBfilialF">Filial funcionario:</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="MIDBfechaIngreso" placeholder="Fecha ingreso" disabled>
+                <label for="MIDBfechaIngreso">Fecha ingreso:</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-floating mb-3">
+                <textarea class="form-control" placeholder="Observaciones" id="MIDBobs" disabled></textarea>
+                <label for="MIDBobs">Observaciones:</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- INICIO DEL FORM -->
+
+        <div class="alert alert-secondary border-secondary" role="alert">
+          <form id="MIDBform">
+            <input type="hidden" name="MIDBidrelacion" id="MIDBidrelacion" />
+            <h3 class="mb-3">Actualización de la gestión:</h3>
+            <div class="row">
+              <div class="col-3">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="MIDBnombreFA" placeholder="Nombre funcionario">
+                  <label for="MIDBnombreFA">Nombre funcionario:</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-floating mb-3">
+                  <select class="form-select" id="MIDBestado" aria-label="Estado" onchange="corroborarMIDBestado()">
+                    <option selected>Seleccione una opción</option>
+                  </select>
+                  <label for="MIDBestado">Estado:</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-floating mb-3">
+                  <select class="form-select" id="MIDBmno" aria-label="Motivo no otorgada" disabled>
+                    <option value="" disabled selected>¿Por qué no se otorgó?</option>
+                    <option value="No está en plazo">No está en plazo</option>
+                    <option value="Deuda">Deuda</option>
+                    <option value="No entregó partida de defunción">No entregó partida de defunción</option>
+                    <option value="No entregó comprobante de viaje">No entregó comprobante de viaje</option>
+                    <option value="Ilocalizable">Ilocalizable</option>
+                  </select>
+                  <label for="MIDBmno">Motivo no otorgada:</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-floating mb-3">
+                  <textarea class="form-control" placeholder="Ingrese aquí información que considere importante"
+                    id="MIDBobservacion" row="1"></textarea>
+                  <label for="MIDBobservacion">Observaciones:</label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="enviarMIDBform" onclick="MIDBactualizarDatos()">Actualizar
+          registro</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,19 +1,22 @@
-<div class="modal fade" id="modalVerMasFuncionarios" role="dialog">
+<!-- Modal -->
+<div class="modal fade" id="modalVerMasFuncionarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header bg-info">
-				<h3>Ver más:</h3>
-				<button type="button" class="close" value="" data-dismiss="modal">&times;</button>
+				<h1 class="modal-title fs-5" id="staticBackdropLabel">Ver más:</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<div class="table-responsive">
-					
-					<textarea name="todo_comentario_funcionarios" id="todo_comentario_funcionarios" cols="30" rows="10" class="form-control" disabled></textarea>
 
+				<div class="table-responsive">
+					<textarea name="todo_comentario_funcionarios" id="todo_comentario_funcionarios" cols="30" rows="10"
+						class="form-control" disabled></textarea>
 				</div>
+
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 			</div>
 		</div>
 	</div>

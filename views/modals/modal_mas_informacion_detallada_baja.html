@@ -1,0 +1,157 @@
+<!-- MODAL PARA VER MÁS INFORMACIÓN DE LA BAJA-->
+<div class="modal fade" id="modalMasInfoHistorialDeBajas" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 2010;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                    <span id="MMIHDBtitulo"></span>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-info border-info" role="alert">
+                    <h3 class="mb-3">Información del socio:</h3>
+                    <div class="row mb-3">
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBnombre" placeholder="Nombre completo"
+                                    disabled>
+                                <label for="MMIHDBnombre">Nombre completo:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBcedula" placeholder="Cédula" disabled>
+                                <label for="MMIHDBcedula">Cédula:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBfilialS" placeholder="Filial"
+                                    disabled>
+                                <label for="MMIHDBfilialS">Filial:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBmotivoB" placeholder="Motivo de baja"
+                                    disabled>
+                                <label for="MMIHDBmotivoB">Motivo de baja:</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mb-3">
+                    <button type="button" class="btn btn-block btn-primary center-block mx-auto"
+                        onclick="listar_servicios_del_socio(2, true)" style="width: 50%">
+                        Información sobre los servicios del usuario
+                    </button>
+                </div>
+
+                <div class="alert alert-info border-info" role="alert">
+                    <h3 class="mb-3">Información de contacto:</h3>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBnombreC" placeholder="Nombre"
+                                    disabled>
+                                <label for="MMIHDBnombreC">Nombre:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBapellido" placeholder="Apellido"
+                                    disabled>
+                                <label for="MMIHDBapellido">Apellido:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBtel" placeholder="Teléfono" disabled>
+                                <label for="MMIHDBtel">Teléfono:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBcel" placeholder="Celular" disabled>
+                                <label for="MMIHDBcel">Celular:</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="mb-3">Información de gestión:</h3>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBnombreF"
+                                    placeholder="Nombre funcionario" disabled>
+                                <label for="MMIHDBnombreF">Nombre funcionario:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBfilialF"
+                                    placeholder="Filial funcionario" disabled>
+                                <label for="MMIHDBfilialF">Filial funcionario:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBfechaIngreso"
+                                    placeholder="Fecha ingreso" disabled>
+                                <label for="MMIHDBfechaIngreso">Fecha ingreso:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" placeholder="Observaciones" id="MMIHDBobs"
+                                    disabled></textarea>
+                                <label for="MMIHDBobs">Observaciones:</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-secondary border-secondary" role="alert">
+                    <h3 class="mb-3">Actualización de la gestión:</h3>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBnombreFA"
+                                    placeholder="Nombre funcionario" disabled>
+                                <label for="MMIHDBnombreFA">Nombre funcionario:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBestado" placeholder="Estado" disabled>
+                                <label for="MMIHDBestado">Estado:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="MMIHDBmno" placeholder="Motivo no otorgada"
+                                    disabled>
+                                <label for="MMIHDBmno">Motivo no otorgada:</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" placeholder="Observaciones" id="MMIHDBobservacion"
+                                    rows="1" disabled></textarea>
+                                <label for="MMIHDBobservacion">Observaciones:</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

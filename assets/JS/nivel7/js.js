@@ -1,18 +1,18 @@
 const produccion = true;
 const app = produccion ? "crm_py" : "crm_py_test";
-const url_app = `http://192.168.1.250:82/${app}/PHP/AJAX/nivel7/`;
+const url_app = `http://192.168.1.250:82/${app}/`;
+const url_ajax = `${url_app}php/ajax/nivel7/`;
 
 
 $(document).ready(function () {
-
     tabla_historial_registros();
-
 });
+
 
 
 function tabla_historial_registros() {
     $('#tabla_historial_registros').DataTable({
-        ajax: `${url_app}historial_registros.php`,
+        ajax: `${url_ajax}historial_registros.php`,
         columns: [
             { data: 'fecha_registro' },
             { data: 'cedula' },
@@ -24,7 +24,7 @@ function tabla_historial_registros() {
         ],
         "bDestroy": true,
         "order": [[0, 'desc']],
-        language: { url: `${url}assets/js/lenguage.json` },
+        language: { url: `${url_app}assets/js/lenguage.json` },
         dom: 'Bfrtip',
         buttons: ['excel'],
     });

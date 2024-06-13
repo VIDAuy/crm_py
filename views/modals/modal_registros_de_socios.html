@@ -1,0 +1,79 @@
+<!-- Modal -->
+<div class="modal fade" id="modalHistoriaComunicacionDeCedula" data-bs-backdrop="static" data-bs-keyboard="false"
+	tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header bg-info">
+				<h1 class="modal-title fs-5" id="staticBackdropLabel">
+					Detalles del registro nro:
+					<span class="fw-bolder" id="MHCDCtitulo"></span>
+				</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="row">
+					<div class="col-9">
+						<div class="form-floating mb-3">
+							<input type="text" class="form-control" id="MHCDCnombre" placeholder="Nombre" disabled>
+							<label for="MHCDCnombre">Nombre:</label>
+						</div>
+					</div>
+					<div class="col-3">
+						<div class="form-floating mb-3">
+							<input type="text" class="form-control" id="MHCDCcedula" placeholder="Cédula" disabled>
+							<label for="MHCDCcedula">Cédula:</label>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-around">
+					<div class="col-6">
+						<div class="form-floating mb-3">
+							<input type="text" class="form-control" id="MHCDCtelefono" placeholder="Teléfono" disabled>
+							<label for="MHCDCtelefono">Teléfono:</label>
+						</div>
+					</div>
+					<div class="col-2">
+						<div class="form-floating mb-3">
+							<input type="text" class="form-control" id="MHCDCsocio" placeholder="Socio" disabled>
+							<label for="MHCDCsocio">Socio:</label>
+						</div>
+					</div>
+					<div class="col-2">
+						<div class="form-floating mb-3">
+							<input type="text" class="form-control" id="MHCDCbaja" placeholder="Socio" disabled>
+							<label for="MHCDCbaja">Baja:</label>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-between">
+					<div class="col-4">
+						<div class="form-floating mb-3">
+							<input type="text" class="form-control" id="MHCDCsector" placeholder="Sector gestión"
+								disabled>
+							<label for="MHCDCsector">Sector gestión:</label>
+						</div>
+					</div>
+					<div class="col-5">
+						<div class="form-floating mb-3">
+							<input type="text" class="form-control" id="MHCDCfecha_registro" placeholder="Fecha"
+								disabled>
+							<label for="MHCDCfecha_registro">Fecha:</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-floating mb-3">
+						<textarea class="form-control" placeholder="Observación" id="MHCDCobservaciones"
+							style="height: 200px" disabled></textarea>
+						<label for="MHCDCobservaciones">Observación:</label>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>

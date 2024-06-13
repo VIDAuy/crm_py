@@ -1,0 +1,46 @@
+<!-- Modal -->
+<div class="modal fade" id="modalListarBajas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header bg-info">
+				<h1 class="modal-title fs-5" id="staticBackdropLabel">Lista de bajas pendientes</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="table-responsive">
+					<table id="tablaMLB" class="table table-bordered table-striped table-hover" width="100%">
+						<thead class="table-dark">
+							<tr>
+								<th>Nombre</th>
+								<th>Cédula</th>
+								<th>Teléfono</th>
+								<th>Fecha solicitud</th>
+								<th>Motivo</th>
+								<th>En Gestión</th>
+								<th>Observaciones</th>
+								<th>Filial solicitud</th>
+								<th>Actualizar registro</th>
+							</tr>
+						</thead>
+						<tbody id="tbodyMLB">
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<div style="float: left;">
+					<label for="where">Filtrar bajas:</label>
+					<select id="where" style="display: inline;" onchange="corroborarBajasWhere();">
+						<option value="2">Todos los resultados</option>
+						<option value="Pendiente">Pendientes</option>
+						<option value="En Gestión">En Gestión</option>
+					</select>
+				</div>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>

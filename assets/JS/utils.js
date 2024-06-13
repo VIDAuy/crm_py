@@ -1,157 +1,137 @@
-/*    SWEET ALERT FUNCIONES */
-function correcto(mensaje = false, titulo = false) {
-  Swal.fire(
-    titulo === false ? 'Correcto' : titulo,
-    !mensaje ? 'La operación se realizó correctamente' : mensaje,
-    'success'
-  );
-}
-function success(mensaje = false, titulo = false) {
-  correcto(mensaje, titulo);
-}
-function error(
-  mensaje = 'Ha ocurrido un error, contacte al administrador',
-  titulo = 'Error!'
-) {
-  Swal.fire(titulo, mensaje, 'error');
-}
-
-function warning(mensaje = false) {
-  Swal.fire(
-    '',
-    !mensaje ? 'Ha ocurrido un error, contacte al administrador' : mensaje,
-    'warning'
-  );
-}
-
-function cargando(opcion = 'M', mensaje = null) {
-  let titulo = 'Cargando ...';
-  if (mensaje != null) titulo = mensaje;
-  else titulo = 'Cargando... ';
-  if (opcion === 'M') {
-    $loader = Swal.fire({
-      title: titulo,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-    });
-    Swal.showLoading();
-  } else {
-    Swal.hideLoading();
-    Swal.close();
-  }
-}
-
-function showLoading(title = 'Cargando...') {
-  Swal.fire({
-    title,
-    allowEscapeKey: false,
-    allowOutsideClick: false,
-    didOpen: () => Swal.showLoading(),
-  });
-}
-
-function hideLoading() {
-  Swal.close();
-}
-
-function confirmar(mensaje) {
-  let conf = Swal.fire({
-    title: mensaje,
-    showDenyButton: true,
-    confirmButtonText: 'Aceptar',
-    denyButtonText: `Cancelar`,
-  });
-  return conf;
-}
-
-let table = null;
-
 const uid = () =>
   String(Date.now().toString(32) + Math.random().toString(16)).replace(
     /\./g,
-    ''
+    ""
   );
-/*  FUNCIONES TABLA  */
+
+
 /* VER MAS TABLA */
 function verMasTabla(event, descripcion_ver_mas) {
   event.preventDefault();
-  $('#descripcion_ver_mas').html(descripcion_ver_mas.replace(/\n/g, '<br />'));
-  $('#modalVerMas').modal('show');
+  $("#descripcion_ver_mas").html(descripcion_ver_mas.replace(/\n/g, "<br />"));
+  $("#modalVerMas").modal("show");
 }
 /* VER MAS TABLA */
 
-/*  FUNCIONES TABLA  */
-function crearTabla(idTabla, ajaxUrl, columns, reload = false) {
-  if ($.fn.DataTable.isDataTable(`#${idTabla}`) && reload) {
-    table.ajax.reload();
-  } else {
-    table = $(`#${idTabla}`).DataTable({
-      processing: true,
-      serverMethod: 'post',
-      searching: true,
-      ajax: ajaxUrl,
-      columns,
-      language: { url: `${url}assets/js/lenguage.json` },
-      order: [[0, 'desc']],
-      responsive: true,
-      autoWidth: false,
-      pageLength: 10,
-      detroy: true,
-      stateSave: true,
-    });
-    $('[type="search"]').addClass('form-control-static');
-    $('[type="search"]').css({ borderRadius: '5px' });
+
+
+/*  FUNCION TABLA   */
+
+function tabla(div, url, datos, columnsTable, recargar = false, function_Call_Back) {
+  let columns = [];
+  columnsTable.map((column) => {
+    columns.push({ data: column });
+  });
+
+  let tabla = $(`#${div}`).DataTable({
+    drawCallback: function (settings) {
+      function_Call_Back();
+    },
+    processing: true,
+    serverMethod: "post",
+    searching: true,
+    ajax: {
+      url: `${url_api}${url_app}`,
+      data: datos,
+    },
+    columns,
+    language: { url: `${url_app}assets/js/lenguage.json` },
+
+    retrieve: true,
+    order: [[0, "desc"]],
+    responsive: true,
+    autoWidth: false,
+    pageLength: 10,
+  });
+  if (recargar == true) {
+    tabla.ajax.reload();
   }
 }
 
-/*  FUNCION TABLA  */
 
-function tabla(idTabla, url, datos, columnsRec, recargar = false) {
+function tabla_async(
+  div,
+  url,
+  datos,
+  columnsTable,
+  recargar = false,
+  funcion_Call_Back
+) {
   return new Promise((resolve, reject) => {
-    let columns = columnsRec.map((column) => {
-      return { data: column };
+    let columns = [];
+    columnsTable.map((column) => {
+      columns.push({ data: column });
     });
-
-    const tabla_html = $(`#${idTabla}`).DataTable({
-      processing: true,
-      rowReorder: {
-        selector: 'td:nth-child(2)',
+    let tabla = $(`#${div}`).DataTable({
+      drawCallback: function (settings) {
+        funcion_Call_Back();
       },
-      responsive: true,
-      serverMethod: 'GET',
+      processing: true,
+      serverMethod: "post",
       searching: true,
       ajax: {
-        url: url,
+        url: `${url_api}${url_app}`,
         data: datos,
       },
-      columns: columns,
-      language: { url: `${url}assets/js/lenguage.json` },
+      columns,
+      language: { url: `${url_app}assets/js/lenguage.json` },
+
       retrieve: true,
-      order: [[0, 'desc']],
+      order: [[0, "desc"]],
+      responsive: true,
       autoWidth: false,
       pageLength: 10,
-      dom: 'Bfrtip',
-      buttons: ['excel'],
     });
-    if (recargar !== false) {
-      tabla_html.ajax.reload();
+    if (recargar == true) {
+      tabla.ajax.reload();
     }
-
     resolve(true);
   });
 }
 
 /*  FUNCION TABLA  */
 
+
+
+
+/*  FUNCION TABLA DE TIPO NORMAL */
+function tablaNormal(div, url, columns, recargar = false) {
+
+  let tabla = div.DataTable({
+
+    'processing': true,
+    'serverMethod': 'get',
+    'searching': true,
+    'ajax': {
+      'url': url,
+    },
+    columns: columns,
+    "language": { url: `${url_app}assets/js/lenguage.json` },
+
+    retrieve: true,
+    order: [[0, 'desc']],
+    responsive: true,
+    autoWidth: false,
+    pageLength: 10,
+
+  });
+  if (recargar == true) {
+    tabla.ajax.reload();
+  }
+
+}
+
+
+
 /*  OBETENER DATOS POR URL */
 function getUrl(sParam) {
   let sPageURL = window.location.search.substring(1),
-    sURLVariables = sPageURL.split('&'),
+    sURLVariables = sPageURL.split("&"),
     sParameterName,
     i;
 
   for (i = 0; i < sURLVariables.length; i++) {
-    sParameterName = sURLVariables[i].split('=');
+    sParameterName = sURLVariables[i].split("=");
 
     if (sParameterName[0] === sParam) {
       return sParameterName[1] === undefined
@@ -163,39 +143,50 @@ function getUrl(sParam) {
 }
 /*  OBETENER DATOS POR URL */
 
+
+
 /*   MODAL */
 function cerrarModal(div) {
-  $(`#${div}`).modal('hide');
+  $(`#${div}`).modal("hide");
 }
+
 
 function abrirModal(div) {
-  $(`#${div}`).modal('show');
+  $(`#${div}`).modal("show");
 }
+
 
 function abrirModalStatic(div) {
-  $(`#${div}`).modal({ backdrop: 'static', keyboard: false }).modal('show');
+  $(`#${div}`).modal({ backdrop: "static", keyboard: false }).modal("show");
 }
-
 /*   MODAL */
 
+
+
 /* PARTIAL/VIEWS*/
-function cargarPartial(partial) {
-  $.get(`${url_app}views/partials/${partial}.html`, function (data) {
+function cargarPartial(tipo, partial) {
+  $.get(`${url_app_views}/${tipo}/${partial}.html`, function (data) {
     $(`#${partial}`).html(data);
   });
 }
 
-function cargarPartialAsync(partial, container = '') {
-  return new Promise(function (resolve, reject) {
-    $.get(`${url_app}views/partials/${partial}.html`, function (data) {
-      container = container ? container : partial;
-      $(`#${container}`).html(data);
-      resolve();
-    });
+
+function cargarPartialAsync(tipo, partial, id_div = false) {
+  let div = id_div != false ? id_div : partial;
+  $.get(`${url_app_views}/${tipo}/${partial}.html`, function (data) {
+    $(`#${div}`).html(data);
   });
 }
 
+
+function cargarPartialViewsAsync(tipo, partial, id_div = false) {
+  let div = id_div != false ? id_div : partial;
+  $.get(`${url_app}/views/${tipo}/${partial}.html`, function (data) {
+    $(`#${div}`).html(data);
+  });
+}
 /* PARTIAL/VIEWS*/
+
 
 /* PRIMERA LETRA A MAYUSCULAS */
 function primeraLetraAMayusculas(cadena) {
@@ -206,28 +197,32 @@ function primeraLetraAMayusculas(cadena) {
 }
 /* PRIMERA LETRA A MAYUSCULAS */
 
+
 /* IMAGENES */
 function quitarImagenes(imagen, event) {
   event.preventDefault();
-  $(`#${imagen}`).val('');
+  $(`#${imagen}`).val("");
 }
 /* IMAGENES */
 
+
 /* SCROLL */
 function scroll(div) {
-  $('html, body').animate({
+  $("html, body").animate({
     scrollTop: $(`#${div}`).offset().top,
   });
 }
 /* SCROLL */
 
+
 /* INPUTS FUNCIONES */
 function limpiarCampos(arrayInputs) {
   arrayInputs.forEach((input) => {
-    $(`#${input}`).val('');
+    $(`#${input}`).val("");
   });
 }
 /* INPUTS FUNCIONES */
+
 
 /* FECHA ACTUAL */
 function fechaActual() {
@@ -239,6 +234,7 @@ function fechaActual() {
   return { dia: dia, mes: mes, anio: anio };
 }
 
+
 function setFechaActualMayor(input) {
   let fecha_actual = fechaActual();
   $(`${input}`).attr({
@@ -248,14 +244,240 @@ function setFechaActualMayor(input) {
 }
 /* FECHA ACTUAL */
 
-/**
- * completarForm
- *
- * @param {String} prefix
- * @param {Object} datos
- */
-function completarForm(prefix, datos) {
-  Object.keys(datos).forEach((key) => {
-    $(`#${prefix}${key}`).val(datos[key]);
+
+function correcto_pasajero(mensaje) {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
+  Toast.fire({
+    icon: 'success',
+    title: mensaje
+  })
+}
+
+
+function alerta(titulo, mensaje, icono) {
+  Swal.fire({ title: titulo, html: mensaje, icon: icono });
+}
+
+
+function error(mensaje) {
+  Swal.fire({ title: 'Error!', html: mensaje, icon: 'error' });
+}
+
+
+function warning(mensaje, titulo = "") {
+  Swal.fire({ title: titulo, html: mensaje, icon: 'warning' });
+}
+
+
+function correcto(mensaje) {
+  Swal.fire({ title: 'Éxito!', html: mensaje, icon: 'success' });
+}
+
+
+function cargando(opcion = "M", mensaje = null) {
+  if (opcion === "M") {
+    $loader = Swal.fire({
+      icon: "info",
+      title: "Cargando...",
+      html: mensaje,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+    });
+    Swal.showLoading();
+  } else {
+    Swal.hideLoading();
+    Swal.close();
+  }
+}
+
+
+function showLoading(title = "Cargando...") {
+  Swal.fire({
+    title,
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
   });
+}
+
+
+function hideLoading() {
+  Swal.close();
+}
+
+
+function mostrarLoader(opcion = "M") {
+  $loader =
+    opcion == "M"
+      ? Swal.fire({
+        icon: "info",
+        title: "Cargando...",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          swal.showLoading();
+        },
+      })
+      : $loader.close();
+}
+
+
+function confirmar(mensaje) {
+  let conf = Swal.fire({
+    title: mensaje,
+    showDenyButton: true,
+    confirmButtonText: "Aceptar",
+    denyButtonText: `Cancelar`,
+  });
+  return conf;
+}
+
+
+function btnFooter(btn_footer) {
+  $(`#${btn_footer.div}`).html(
+    `<button class='btn btn-warning' onClick= ${btn_footer.funcion} > ${btn_footer.text}</button>`
+  );
+}
+
+
+function deshabilitarBoton(idBtn) {
+  $(`#${idBtn}`).prop("disabled", true);
+}
+
+
+function habilitarBoton(idBtn) {
+  $(`#${idBtn}`).removeAttr("disabled");
+}
+
+
+function mostrarErrorInput(div, mensaje) {
+  $(`${div}`).html(`<div style='color:red'> ${mensaje}</div>`);
+}
+
+
+function ocultarErrorInput(div) {
+  $(`${div}`).html("");
+}
+
+
+function redirectTo(url) {
+  window.location.href = url;
+}
+
+
+function remplazar(div, datos) {
+  return new Promise(function (resolve, reject) {
+    for (let key in datos) {
+      if ($(`${div}:contains('{{${key}}}')`)) {
+        let regex = new RegExp(`{{${key}}}`, "gi");
+        $(`${div}`).html($(`${div}`).html().replace(regex, datos[key]));
+      }
+    }
+  });
+}
+
+
+function showHidePassword() {
+  const idInput = $(this).data("input");
+  const $inputPassword = $(`#${idInput}`);
+  if ($inputPassword.attr("type") == "text") {
+    $inputPassword.attr("type", "password");
+    $(this).find("i").removeClass("fas fa-eye").addClass("fas fa-eye-slash");
+  } else if ($inputPassword.attr("type") == "password") {
+    $inputPassword.attr("type", "text");
+    $(this).find("i").removeClass("fas fa-eye-slash").addClass("fas fa-eye");
+  }
+}
+
+
+function mostrarBotonesForm() {
+  $("#botonesForm").removeClass("d-none").addClass("d-flex");
+}
+
+
+function ocultarSecciones() {
+  $(".seccion-afiliacion").addClass("d-none");
+}
+
+
+function mostrarSeccion(idSeccion) {
+  $(`#${idSeccion}`).parent().removeClass("d-none");
+}
+
+
+function setTituloHeader(titulo) {
+  $("#headerTitulo").html(`<h2>${titulo}</h2>`);
+}
+
+
+function selectFechasForm() {
+  const fecha = new Date();
+  const anio = fecha.getFullYear();
+  for (let i = anio; i <= anio + 15; i++) {
+    $("#anio_vencimiento").append(` <option value="${i}">${i}</option>`);
+  }
+
+  for (let j = 1; j <= 12; j++) {
+    $("#mes_vencimiento").append(` <option value="0${j}">${j}</option>`);
+  }
+}
+
+
+/* Agregar Imagenes */
+function agregarImagen(imagenes) {
+  for (let imagen of imagenes) {
+    $(`#${imagen.div}`).attr("src", `${url_imagenes}${imagen.nombre}`);
+  }
+}
+
+
+function vaciar_inputs(campos) {
+  campos.forEach((campo) => {
+    campo == "txt_form_patologia" || campo == "txt_form_movilizacion"
+      ? $("#" + campo)
+        //.val("0")
+        .val("")
+        .change()
+      : $("#" + campo).val("");
+  });
+}
+
+
+function copiarLink() {
+  let url = $("#url_para_pagar").val();
+  $("#url_para_pagar").focus();
+  let textArea = document.createElement("textarea");
+  textArea.value = url;
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.position = "fixed";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    let successful = navigator.clipboard.writeText(textArea.value);
+    if (successful) {
+      Swal.fire("Correcto", "Link copiado correctamente!", "success");
+    } else {
+      Swal.fire("Error!", "Error copiando el enlace", "error");
+    }
+  } catch (err) { }
+  document.body.removeChild(textArea);
+}
+
+
+function abrirLink() {
+  let url = $("#url_para_pagar").val();
+  window.open(url, "_blank");
 }

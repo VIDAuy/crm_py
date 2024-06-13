@@ -4,18 +4,16 @@ include '../configuraciones.php';
 $cedula = $_REQUEST['cedula'];
 
 $ultima_fecha = obtener_fecha($cedula);
+if ($ultima_fecha == null || $ultima_fecha == "") devolver_error("<span class='text-danger fw-bolder'> No hay registros </span>");
+
+
+$fecha_ultima = $ultima_fecha['fecha_registro'];
+$sector_ultima = $ultima_fecha['sector'];
 
 
 
-if ($ultima_fecha['fecha_registro'] === null) {
-    $response['error'] = true;
-    $response['mensaje'] = "<span class='text-danger fw-bolder'> No hay registros </span>";
-} else {
-    $response['error'] = false;
-    $response['mensaje'] = "<span class='text-success'>" . date("d/m/Y H:i:s", strtotime($ultima_fecha['fecha_registro'])) . ": " . $ultima_fecha['sector'] . "</span>";
-}
-
-
+$response['error'] = false;
+$response['mensaje'] = "<span class='text-success'>" . date("d/m/Y H:i:s", strtotime($fecha_ultima)) . ": " . $sector_ultima . "</span>";
 echo json_encode($response);
 
 
