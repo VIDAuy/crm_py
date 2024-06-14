@@ -12,11 +12,11 @@ $conexion = connection(DB);
 $tabla = TABLA_BAJAS;
 $tabla1 = TABLA_REGISTROS_PY;
 
-$sector = $_GET['sector'];
+$sector = $_SESSION['usuario_py'];
 
 
 $data 	  = array_map('stripslashes', $_POST);
-$response = array('result' => false, 'message' => 'error');
+$response = ['result' => false, 'message' => 'error'];
 
 if ($data) {
 	$fechaIngresoBaja   = date('Y-m-d');
@@ -28,39 +28,44 @@ if ($data) {
 	$nombreSocio 	    = $data['nombre_socio'];
 	$cedulaSocio 	    = $data['cedula_socio'];
 	$filialSocio 	    = $data['filial_socio'];
-	$servicioContratado	= $data['nroServicio0'];
-	$horasContratadas 	= $data['horas0'];
-	$importe 			= $data['importe0'];
+	$motivoBaja 	    = $data['motivo_baja'];
+	$nombreContacto     = mb_convert_case(mysqli_real_escape_string($conexion, $data['nombre_contacto']), MB_CASE_TITLE, 'UTF-8');
+	$apellidoContacto   = mb_convert_case(mysqli_real_escape_string($conexion, $data['apellido_contacto']), MB_CASE_TITLE, 'UTF-8');
+	$telefonoContacto   = (isset($data['telefono_contacto']) && strlen($data['telefono_contacto']) === 8) ? $data['telefono_contacto'] : null;
+	$celularContacto    = (isset($data['celular_contacto']) && strlen($data['celular_contacto']) === 9) ? $data['celular_contacto'] : null;
+	$servicioContratado	= "";
+	$horasContratadas 	= "";
+	$importe 			= "";
 
-	$i = 1;
-	while (isset($data['horas' . $i])) {
-		$servicioContratado = $servicioContratado . ', ' . $data['nroServicio' . $i];
-		$horasContratadas 	= $horasContratadas . ', ' . $data['horas' . $i];
-		$importe 			= $importe . ', ' . $data['importe' . $i];
-		$i++;
+	$datos_productos = obtener_productos_contratados($cedulaSocio);
+	while ($row = mysqli_fetch_assoc($datos_productos)) {
+		$servicioContratado .= $servicioContratado == "" ? $row['servicio'] : ", " . $row['servicio'];
+		$horasContratadas   .= $horasContratadas   == "" ? $row['hora']     : ", " . $row['hora'];
+		$importe            .= $importe            == "" ? $row['importe']  : ", " . $row['importe'];
 	}
-	$motivoBaja 	  = $data['motivo_baja'];
-	$nombreContacto   = mb_convert_case(mysqli_real_escape_string($conexion, $data['nombre_contacto']), MB_CASE_TITLE, 'UTF-8');
-	$apellidoContacto = mb_convert_case(mysqli_real_escape_string($conexion, $data['apellido_contacto']), MB_CASE_TITLE, 'UTF-8');
-	$telefonoContacto = (isset($data['telefono_contacto']) && strlen($data['telefono_contacto']) === 8) ? $data['telefono_contacto'] : null;
-	$celularContacto  = (isset($data['celular_contacto']) && strlen($data['celular_contacto']) === 9) ? $data['celular_contacto'] : null;
+
+	if (in_array($sector, ['19585073', '50709395'])) $sector = 'Bajas';
 
 
-	if (in_array($_GET['sector'], array('19585073', '50709395'))) {
-		$sector = 'Bajas';
-	}
+
+
+	if ($fechaIngresoBaja == "" || $idrelacion == "" || $nombreFuncionario == "" || $filialSolicitud == "" || $estado == "" || $observaciones == "" || $nombreSocio == "" || $cedulaSocio == "" || $filialSocio == "" || $servicioContratado == "" || $horasContratadas == "" || $importe == "" || $motivoBaja == "" || $nombreContacto == "" || $apellidoContacto == "" || ($telefonoContacto == "" && $celularContacto == "") || ($telefonoContacto != "" && $celularContacto != ""))
+		die(json_encode(['result' => false, 'message' => "Ha ocurrido un error, contactese con un administrador."]));
+
+
+
 
 	$q = "SELECT activo FROM {$tabla} WHERE idrelacion = '$idrelacion' AND activo = 1";
 	$r = mysqli_query($conexion, $q);
 
-	if (mysqli_num_rows($r) != 0) $response = array('registroActivo' => true, 'message' => 'Ya se está gestionando una baja para esa persona.');
+	if (mysqli_num_rows($r) != 0) $response = ['registroActivo' => true, 'message' => 'Ya se está gestionando una baja para esa persona.'];
 	else {
 		$qSelect = "SELECT COUNT(`telefono_contacto`) AS `cantidad` FROM {$tabla} WHERE `telefono_contacto` = '{$telefonoContacto}' GROUP BY `telefono_contacto`";
 		$select = mysqli_query($conexion, $q);
-		$cantidadDeUsosTelefono = mysqli_fetch_assoc($select)['cantidad'];
+		$cantidadDeUsosTelefono = mysqli_num_rows($select);
 		$qSelect = "SELECT COUNT(`celular_contacto`) AS `cantidad` FROM {$tabla} WHERE `celular_contacto` = '{$celularContacto}' GROUP BY `celular_contacto`";
 		$select = mysqli_query($conexion, $q);
-		$cantidadDeUsosCelular = mysqli_fetch_assoc($select)['cantidad'];
+		$cantidadDeUsosCelular = mysqli_num_rows($select);
 
 		if ($cantidadDeUsosTelefono > 0)
 			$observaciones .= "\nADVERTENCIA, EL TELÉFONO DE CONTACTO {$telefonoContacto} SE HA UTILIZADO {$cantidadDeUsosTelefono} VECES.";
@@ -124,7 +129,7 @@ if ($data) {
 			$email = EnviarMail("Calidaduy", EMAIL_CALIDAD, $bodyHtml);
 
 
-			$response 	= array(
+			$response 	= [
 				'email'                  => $email ? true : false,
 				'result'                 => true,
 				'message'                => $mensaje,
@@ -132,9 +137,9 @@ if ($data) {
 				'reiteraciones_telefono' => $cantidadDeUsosTelefono,
 				'celular'                => $celularContacto,
 				'reiteraciones_celular'  => $cantidadDeUsosCelular
-			);
+			];
 		} else {
-			$response = array('result' => false, 'message' => 'Ha ocurrido un error al ingresar los registros.');
+			$response = ['result' => false, 'message' => 'Ha ocurrido un error al ingresar los registros.'];
 		}
 	}
 
@@ -176,8 +181,24 @@ echo json_encode($response);
 
 
 
+function obtener_productos_contratados($cedula)
+{
+	$conexion = connection(DB_AFILIACION_PARAGUAY);
+	$tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
+	$sql = "SELECT 
+			 servicio, 
+			 hora, 
+			 importe 
+	  		FROM 
+			 {$tabla}
+	  		WHERE 
+			 cedula = '$cedula' 
+			ORDER BY id DESC";
+	$consulta = mysqli_query($conexion, $sql);
 
+	return $consulta;
+}
 
 
 function htmlBodyEmail($texto)
@@ -232,22 +253,24 @@ function htmlBodyEmail($texto)
 	return $html;
 }
 
+
 function EnviarMail($sector, $email, $bodyHtml, $ccs = null)
 {
 	$configuracion = [
-		"host" => "smtp.gmail.com",
-		"port" => 587,
+		"host"     => "smtp.gmail.com",
+		"port"     => 587,
 		"username" => "no-responder@vida.com.uy",
 		"password" => "2k8.vida",
-		"from" => "no-responder@vida.com.uy",
+		"from"     => "no-responder@vida.com.uy",
+		"fromname" => @utf8_decode(ucfirst($sector)),
 	];
 
 	$datos = [
-		"email" => $email,
+		"email"  => $email,
 		"nombre" => $sector
 	];
 
-	$asunto = "Usted tiene una nueva alerta en CRM";
+	$asunto = "Usted tiene una nueva solicitud de baja en CRM PY";
 
 	$mail = new PHPMailer();
 	$mail->isSMTP();

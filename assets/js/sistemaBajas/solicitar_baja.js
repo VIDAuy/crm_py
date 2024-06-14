@@ -56,13 +56,12 @@ function listarDatos(CI) {
 				}
 			},
 			error: function () {
-				$('#txtResult').html('Ocurrio un error. Por favor vuelva a intentar en instantes.');
-				$('#primaria').css('display', 'none');
+				error('Ocurrio un error. Por favor vuelva a intentar en instantes.');
 			}
 		});
 	} else {
 		error('Se debe de ingresar la cédula del usuario previamente.');
-		$('#modalSolicitarBaja .close').click();
+		$('#modalSolicitarBaja').modal("hide");
 	}
 }
 
@@ -86,18 +85,20 @@ function guardarDatos() {
 			if (content.registroActivo) {
 				limpiar();
 				correcto(content.message);
-				$('#modalSolicitarBaja .close').click();
+				$('#modalSolicitarBaja').modal("hide");
 			} else if (content.result) {
 				limpiar();
 				correcto(content.message);
-				$('#modalSolicitarBaja .close').click();
+				$('#modalSolicitarBaja').modal("hide");
 			} else {
 				error(content.message);
 			}
+
+			alertar_gestion_bajas();
+			historiaComunicacionDeCedula();
 		},
 		error: function () {
-			$('#txtResult').html('Ocurrio un error. Por favor vuelva a intentar en instantes.');
-			$('#primaria').css("display", "none");
+			error('Ocurrio un error. Por favor vuelva a intentar en instantes.');
 		}
 	});
 }
@@ -185,7 +186,7 @@ function corroborarDatos() {
 		if ($('#celular_contacto').val() != '') {
 			if (!/^([0-9])*$/.test($('#celular_contacto').val()))
 				mensaje += 'El campo "Celular contacto" sólo puede contener números.\n';
-			else if ($('#celular_contacto').val().length != 10)
+			else if ($('#celular_contacto').val().length != 9)
 				mensaje += 'El campo "Celular contacto" debe de tener 9 números.\n';
 			else if ($('#celular_contacto').val().substring(0, 2) != 09)
 				mensaje += 'El celular ingresado en el campo "Celular contacto" es inválido.\n';

@@ -5,8 +5,7 @@
 		<div class="modal-content">
 			<div class="modal-header bg-danger">
 				<h1 class="modal-title fs-5" id="staticBackdropLabel">
-					Solicitar baja de:
-					<span id="cedulaTitulo"></span>
+					Solicitar baja de: <span id="cedulaTitulo"></span>
 				</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
@@ -18,7 +17,7 @@
 
 					<input type="hidden" name="idrelacion" id="idrelacion2" class="idrelacion">
 					<input type="hidden" name="filial_solicitud" id="filial_solicitud"
-						value="<?php echo $_SESSION['filial_py'] ?>">
+						value="<?php echo $_SESSION['filial'] ?>">
 					<input type="hidden" name="fecha_solicitud" id="fecha_solicitud" value="<?php echo date('Y-m-d')?>">
 					<input type="hidden" name="filial_socio" id="filial_socio">
 
@@ -33,115 +32,114 @@
 					<!-- INPUT AUTOGESTIONABLES -->
 
 					<div class="col-12">
-						<h1 class="fw-bolder mb-3">Formulario de bajas:</h1>
-
-						<div class="alert alert-info border-info mb-3" role="alert">
-							<h3 class="fw-bolder mb-3">Información usuario:</h3>
-							<div class="col-12 mb-3">
-								<div class="row">
-									<div class="col-3" style="margin-top: 5px;">
-										<div class="form-floating mb-3">
-											<input type="text" class="form-control" id="nombre_socio"
-												placeholder="Nombre socio" disabled>
-											<label for="nombre_socio">Nombre Socio:</label>
-										</div>
-									</div>
-									<div class="col-3 text-center" style="margin-top: 5px;">
-										<div class="form-floating mb-3">
-											<input type="text" class="form-control solo_numeros" id="cedula_socio"
-												placeholder="C.I. del socio" pattern="\d*" maxlength="8" disabled>
-											<label for="cedula_socio">C.I. del socio:</label>
-										</div>
-									</div>
-									<div class="col-3 text-center" style="margin-top: 5px;">
-										<div class="form-floating mb-3">
-											<select class="form-select" id="motivo_baja" aria-label="Motivo baja">
-												<option value="" selected disabled>Seleccione un motivo</option>
-												<option value="Económicos">Económicos</option>
-												<option value="Fallecimiento">Fallecimiento</option>
-												<option value="Desconformidad con el servicio">Desconformidad con el
-													servicio
-												</option>
-												<option value="Viaje">Viaje</option>
-												<option value="Competencia">Competencia</option>
-												<option value="Reclamo defensa al consumidor">Reclamo defensa al
-													consumidor
-												</option>
-												<option value="Excepciones">Excepciones</option>
-												<option value="Personales">Personales</option>
-											</select>
-											<label for="motivo_baja">Motivo baja:</label>
-										</div>
-									</div>
-									<div class="col-3 text-center" style="margin-top: 5px;">
-										<div class="form-floating mb-3">
-											<input type="text" class="form-control solo_numeros" id="radio_socio"
-												placeholder="Radio" pattern="\d*" maxlength="8" disabled>
-											<label for="radio_socio">Radio:</label>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="d-flex justify-content-center mb-3">
-							<button type="button" class="btn btn-block btn-primary center-block mx-auto"
-								onclick="listar_servicios_del_socio(3, false)" style="width: 50%">
-								Servicios contratados
-							</button>
-						</div>
-
-						<div class="alert alert-secondary border-secondary mb-3" role="alert">
-							<h3 class="mb-3"><b>Información contacto:</b></h3>
-							<div class="col-12" style="margin-top: 5px;">
-								<div class="row" style="margin-top: 5px;">
-									<div class="col-3 text-center">
-										<div class="form-floating mb-3">
-											<input type="text" class="form-control" id="nombre_contacto"
-												placeholder="Nombre Contacto">
-											<label for="nombre_contacto">Nombre Contacto:</label>
-										</div>
-									</div>
-									<div class="col-3 text-center" style="margin-top: 5px;">
-										<div class="form-floating mb-3">
-											<input type="text" class="form-control" id="apellido_contacto"
-												placeholder="Apellido Contacto">
-											<label for="apellido_contacto">Apellido Contacto:</label>
-										</div>
-									</div>
-									<div class="col-3 text-center" style="margin-top: 5px;">
-										<div class="form-floating mb-3">
-											<input type="text" class="form-control solo_numeros" id="telefono_contacto"
-												placeholder="Teléfono Contacto" pattern="\d*" maxlength="8">
-											<label for="telefono_contacto">Teléfono Contacto:</label>
-										</div>
-									</div>
-									<div class="col-3 text-center" style="margin-top: 5px;">
-										<div class="form-floating mb-3">
-											<input type="text" class="form-control solo_numeros" id="celular_contacto"
-												placeholder="Celular Contacto" pattern="\d*" maxlength="10">
-											<label for="celular_contacto">Celular Contacto:</label>
-										</div>
-									</div>
-								</div>
-							</div>
-							<br>
-							<h3><b>Información de gestión:</b></h3>
+						<h1><b>Formulario de bajas:</b></h1>
+						<br>
+						<h3 class="mb-3"><b>Información usuario:</b></h3>
+						<div class="col-12" style="margin-top: 5px;">
 							<div class="row">
-								<div class="col-3">
-									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="nombre_funcionario"
-											placeholder="Nombre de funcionario">
-										<label for="nombre_funcionario">Nombre de funcionario:</label>
-									</div>
+								<div class="col-3 text-center" style="margin-top: 5px;">
+									<label for="nombre_socio"><b>Nombre socio: </b></label>
 								</div>
-								<div class="col-9">
-									<div class="form-floating">
-										<textarea class="form-control" placeholder="Observaciones" id="observaciones"
-											rows="1"></textarea>
-										<label for="observaciones">Observaciones:</label>
-									</div>
+								<div class="col-3" style="margin-top: 5px;">
+									<input type="text" class="form-control mb-2" name="nombre_socio" id="nombre_socio"
+										readonly>
 								</div>
+								<div class="col-3 text-center" style="margin-top: 5px;">
+									<label for="cedula_socio"><b>C.I. del socio:</b></label>
+								</div>
+								<div class="col-3" style="margin-top: 5px;">
+									<input type="text" pattern="\d*" maxlength="8"
+										class="form-control mb-2 solo_numeros" name="cedula_socio" id="cedula_socio"
+										readonly>
+								</div>
+								<div class="col-3 text-center" style="margin-top: 5px;">
+									<label for="motivo_baja"><b>Motivo baja:</b></label>
+								</div>
+								<div class="col-3" style="margin-top: 5px;">
+									<select class="form-select mb-2" name="motivo_baja" id="motivo_baja">
+										<option value="" selected disabled>Seleccione un motivo</option>
+										<option value="Económicos">Económicos</option>
+										<option value="Fallecimiento">Fallecimiento</option>
+										<option value="Desconformidad con el servicio">Desconformidad con el servicio
+										</option>
+										<option value="Viaje">Viaje</option>
+										<option value="Competencia">Competencia</option>
+										<option value="Reclamo defensa al consumidor">Reclamo defensa al consumidor
+										</option>
+										<option value="Excepciones">Excepciones</option>
+										<option value="Personales">Personales</option>
+										<option value="Personales">Personales</option>
+										<option value="Rescisión unilateral de Vida">Rescisión unilateral de Vida
+										</option>
+										<option value="Solicitud interna">Solicitud interna</option>
+									</select>
+								</div>
+								<div class="col-3 text-center" style="margin-top: 5px;">
+									<label for="radio_socio"><b>Radio:</b></label>
+								</div>
+								<div class="col-3" style="margin-top: 5px; margin-bottom: 5px;">
+									<input type="text" pattern="\d*" maxlength="8"
+										class="form-control mb-2 solo_numeros" name="radio_socio" id="radio_socio"
+										readonly>
+								</div>
+								<div class="col-4"></div>
+								<div class="col-5">
+									<button type="button" class="btn btn-block btn-primary"
+										onclick="listar_servicios_del_socio(3, false)">
+										Servicios contratados
+									</button>
+								</div>
+							</div>
+						</div>
+						<br>
+						<h3 class="mb-3"><b>Información contacto:</b></h3>
+						<div class="col-12" style="margin-top: 5px;">
+							<div class="row" style="margin-top: 5px;">
+								<div class="col-3 text-center">
+									<label for="nombre_contacto"><b>Nombre contacto:</b></label>
+								</div>
+								<div class="col-3" style="margin-top: 5px;">
+									<input type="text" class="form-control mb-2" name="nombre_contacto"
+										id="nombre_contacto">
+								</div>
+								<div class="col-3 text-center" style="margin-top: 5px;">
+									<label for="apellido_contacto"><b>Apellido contacto:</b></label>
+								</div>
+								<div class="col-3" style="margin-top: 5px;">
+									<input type="text" class="form-control mb-2" name="apellido_contacto"
+										id="apellido_contacto">
+								</div>
+								<div class="col-3 text-center" style="margin-top: 5px;">
+									<label for="numero_contacto"><b>Teléfono contacto:</b></label>
+								</div>
+								<div class="col-3" style="margin-top: 5px;">
+									<input type="text" pattern="\d*" maxlength="8"
+										class="form-control mb-2 solo_numeros" name="telefono_contacto"
+										id="telefono_contacto">
+								</div>
+								<div class="col-3 text-center" style="margin-top: 5px;">
+									<label for="numero_contacto"><b>Celular contacto:</b></label>
+								</div>
+								<div class="col-3" style="margin-top: 5px;">
+									<input type="text" pattern="\d*" maxlength="9"
+										class="form-control mb-2 solo_numeros" name="celular_contacto"
+										id="celular_contacto">
+								</div>
+							</div>
+						</div>
+						<br>
+						<h3><b>Información de gestión:</b></h3>
+						<div class="row">
+							<div class="col-6">
+								<label for="nombre_funcionario" class="col-form-label"><b>Nombre de funcionario:
+									</b></label>
+								<input type="text" class="form-control" name="nombre_funcionario"
+									id="nombre_funcionario">
+							</div>
+							<div class="col-6">
+								<label for="observaciones" class="col-form-label"><b>Observaciones:</b></label>
+								<textarea class="form-control" rows="1" name="observaciones"
+									id="observaciones"></textarea>
 							</div>
 						</div>
 					</div>
